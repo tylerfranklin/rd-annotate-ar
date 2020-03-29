@@ -13,6 +13,7 @@ target 'AnnotateAR' do
   end
 
   target 'AnnotateARUITests' do
+    inherit! :search_paths
     # Pods for testing
   end
 
