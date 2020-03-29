@@ -1,6 +1,0 @@
-framework module Pods_AnnotateAR_AnnotateARUITests {
-  umbrella header "Pods-AnnotateAR-AnnotateARUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -18,7 +18,7 @@
 		109E62D1243097D9006299A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 109E62D0243097D9006299A5 /* GoogleService-Info.plist */; };
 		55548E673ACCBCE5278474EC /* Pods_AnnotateAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F245FBB21B5CC3060E54924 /* Pods_AnnotateAR.framework */; };
 		8279F8751CE2939456E11485 /* Pods_AnnotateARTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42345A72EB7F78A0A2BEC17 /* Pods_AnnotateARTests.framework */; };
-		B698AF55FF2FB4EFB8213755 /* Pods_AnnotateAR_AnnotateARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C9BB15B96C90DCD56E98864 /* Pods_AnnotateAR_AnnotateARUITests.framework */; };
+		DA04BCBD315BDF4A9A5D17AD /* Pods_AnnotateARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B014B569499924A6E5FFA20 /* Pods_AnnotateARUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,10 +56,12 @@
 		109E62D0243097D9006299A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		32C891923C9592666B77691D /* Pods-AnnotateARTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARTests.release.xcconfig"; path = "Target Support Files/Pods-AnnotateARTests/Pods-AnnotateARTests.release.xcconfig"; sourceTree = "<group>"; };
 		3F245FBB21B5CC3060E54924 /* Pods_AnnotateAR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnnotateAR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4C9BB15B96C90DCD56E98864 /* Pods_AnnotateAR_AnnotateARUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnnotateAR_AnnotateARUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		46DE7AE82589AE129FF80353 /* Pods-AnnotateARUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARUITests.release.xcconfig"; path = "Target Support Files/Pods-AnnotateARUITests/Pods-AnnotateARUITests.release.xcconfig"; sourceTree = "<group>"; };
+		6B014B569499924A6E5FFA20 /* Pods_AnnotateARUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnnotateARUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73A22CAE7F3B681947026A81 /* Pods-AnnotateAR-AnnotateARUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateAR-AnnotateARUITests.release.xcconfig"; path = "Target Support Files/Pods-AnnotateAR-AnnotateARUITests/Pods-AnnotateAR-AnnotateARUITests.release.xcconfig"; sourceTree = "<group>"; };
 		76156F8F333927362323B2DF /* Pods-AnnotateARTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARTests.debug.xcconfig"; path = "Target Support Files/Pods-AnnotateARTests/Pods-AnnotateARTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B42345A72EB7F78A0A2BEC17 /* Pods_AnnotateARTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnnotateARTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE73A7650815350B82E551A2 /* Pods-AnnotateARUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARUITests.debug.xcconfig"; path = "Target Support Files/Pods-AnnotateARUITests/Pods-AnnotateARUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D0216D58D8FE89F9AAAD2A1B /* Pods-AnnotateAR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateAR.debug.xcconfig"; path = "Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR.debug.xcconfig"; sourceTree = "<group>"; };
 		D9C11C8DC52272F637542FBC /* Pods-AnnotateAR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateAR.release.xcconfig"; path = "Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR.release.xcconfig"; sourceTree = "<group>"; };
 		DE315E539D959837433466F1 /* Pods-AnnotateAR-AnnotateARUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateAR-AnnotateARUITests.debug.xcconfig"; path = "Target Support Files/Pods-AnnotateAR-AnnotateARUITests/Pods-AnnotateAR-AnnotateARUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -86,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B698AF55FF2FB4EFB8213755 /* Pods_AnnotateAR_AnnotateARUITests.framework in Frameworks */,
+				DA04BCBD315BDF4A9A5D17AD /* Pods_AnnotateARUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,8 +99,8 @@
 			isa = PBXGroup;
 			children = (
 				3F245FBB21B5CC3060E54924 /* Pods_AnnotateAR.framework */,
-				4C9BB15B96C90DCD56E98864 /* Pods_AnnotateAR_AnnotateARUITests.framework */,
 				B42345A72EB7F78A0A2BEC17 /* Pods_AnnotateARTests.framework */,
+				6B014B569499924A6E5FFA20 /* Pods_AnnotateARUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -175,6 +177,8 @@
 				73A22CAE7F3B681947026A81 /* Pods-AnnotateAR-AnnotateARUITests.release.xcconfig */,
 				76156F8F333927362323B2DF /* Pods-AnnotateARTests.debug.xcconfig */,
 				32C891923C9592666B77691D /* Pods-AnnotateARTests.release.xcconfig */,
+				BE73A7650815350B82E551A2 /* Pods-AnnotateARUITests.debug.xcconfig */,
+				46DE7AE82589AE129FF80353 /* Pods-AnnotateARUITests.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -191,6 +195,7 @@
 				109E629924309691006299A5 /* Sources */,
 				109E629A24309691006299A5 /* Frameworks */,
 				109E629B24309691006299A5 /* Resources */,
+				C286DFF27F17AF93E1AA534E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -333,6 +338,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C286DFF27F17AF93E1AA534E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D033F2B1BE6A9A0D55A13BB3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -370,7 +392,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AnnotateAR-AnnotateARUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-AnnotateARUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -637,7 +659,7 @@
 		};
 		109E62CE24309693006299A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DE315E539D959837433466F1 /* Pods-AnnotateAR-AnnotateARUITests.debug.xcconfig */;
+			baseConfigurationReference = BE73A7650815350B82E551A2 /* Pods-AnnotateARUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -658,7 +680,7 @@
 		};
 		109E62CF24309693006299A5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73A22CAE7F3B681947026A81 /* Pods-AnnotateAR-AnnotateARUITests.release.xcconfig */;
+			baseConfigurationReference = 46DE7AE82589AE129FF80353 /* Pods-AnnotateARUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
