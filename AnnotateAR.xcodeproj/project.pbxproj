@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10813914243169DE00DD594A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 10813913243169DE00DD594A /* .gitignore */; };
 		109E62A124309691006299A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109E62A024309691006299A5 /* AppDelegate.swift */; };
 		109E62A324309691006299A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109E62A224309691006299A5 /* SceneDelegate.swift */; };
 		109E62A524309691006299A5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109E62A424309691006299A5 /* ContentView.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10813913243169DE00DD594A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		109E629D24309691006299A5 /* AnnotateAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnnotateAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		109E62A024309691006299A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		109E62A224309691006299A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		109E629424309691006299A5 = {
 			isa = PBXGroup;
 			children = (
+				10813913243169DE00DD594A /* .gitignore */,
 				109E629F24309691006299A5 /* AnnotateAR */,
 				109E62B624309693006299A5 /* AnnotateARTests */,
 				109E62C124309693006299A5 /* AnnotateARUITests */,
@@ -180,7 +183,6 @@
 				BE73A7650815350B82E551A2 /* Pods-AnnotateARUITests.debug.xcconfig */,
 				46DE7AE82589AE129FF80353 /* Pods-AnnotateARUITests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -196,6 +198,7 @@
 				109E629A24309691006299A5 /* Frameworks */,
 				109E629B24309691006299A5 /* Resources */,
 				C286DFF27F17AF93E1AA534E /* [CP] Embed Pods Frameworks */,
+				E78D895D5FF330F5746D88BA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -292,6 +295,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10813914243169DE00DD594A /* .gitignore in Resources */,
 				109E62AD24309693006299A5 /* LaunchScreen.storyboard in Resources */,
 				109E62D1243097D9006299A5 /* GoogleService-Info.plist in Resources */,
 				109E62AA24309693006299A5 /* Preview Assets.xcassets in Resources */,
@@ -375,6 +379,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E78D895D5FF330F5746D88BA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EFE8D00AD4E1618B4D6C2715 /* [CP] Check Pods Manifest.lock */ = {
