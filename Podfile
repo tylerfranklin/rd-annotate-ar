@@ -4,10 +4,9 @@
 target 'AnnotateAR' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  dynamic frameworks
 
   # Pods for AnnotateAR
-  pod Firebase/Core
+  pod 'Firebase/Core'
 
   target 'AnnotateARTests' do
     inherit! :search_paths
@@ -20,3 +19,4 @@ target 'AnnotateAR' do
   end
 
 end
+
