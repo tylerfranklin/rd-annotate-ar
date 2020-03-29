@@ -15,6 +15,7 @@
 		109E62AD24309693006299A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 109E62AB24309693006299A5 /* LaunchScreen.storyboard */; };
 		109E62B824309693006299A5 /* AnnotateARTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109E62B724309693006299A5 /* AnnotateARTests.swift */; };
 		109E62C324309693006299A5 /* AnnotateARUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109E62C224309693006299A5 /* AnnotateARUITests.swift */; };
+		109E62D1243097D9006299A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 109E62D0243097D9006299A5 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		109E62BE24309693006299A5 /* AnnotateARUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnnotateARUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		109E62C224309693006299A5 /* AnnotateARUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotateARUITests.swift; sourceTree = "<group>"; };
 		109E62C424309693006299A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		109E62D0243097D9006299A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				109E62A624309693006299A5 /* Assets.xcassets */,
 				109E62AB24309693006299A5 /* LaunchScreen.storyboard */,
 				109E62AE24309693006299A5 /* Info.plist */,
+				109E62D0243097D9006299A5 /* GoogleService-Info.plist */,
 				109E62A824309693006299A5 /* Preview Content */,
 			);
 			path = AnnotateAR;
@@ -241,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				109E62AD24309693006299A5 /* LaunchScreen.storyboard in Resources */,
+				109E62D1243097D9006299A5 /* GoogleService-Info.plist in Resources */,
 				109E62AA24309693006299A5 /* Preview Assets.xcassets in Resources */,
 				109E62A724309693006299A5 /* Assets.xcassets in Resources */,
 			);
