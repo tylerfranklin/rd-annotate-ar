@@ -9,6 +9,7 @@ target 'AnnotateAR' do
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
   pod 'FirebaseUI/Auth'
+  pod 'FirebaseUI/Google'
 
   target 'AnnotateARTests' do
     inherit! :search_paths
