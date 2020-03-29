@@ -6,6 +6,7 @@ target 'AnnotateAR' do
   use_frameworks!
 
   # Pods for AnnotateAR
+  pod Firebase/Core
 
   target 'AnnotateARTests' do
     inherit! :search_paths
