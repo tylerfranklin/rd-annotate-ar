@@ -32,4 +32,6 @@ class LoginViewController: UIViewController, FUIAuthDelegate {
             present(authViewController, animated: true, completion: nil)
         }
     }
+
+    func authUI(_: FUIAuth, didSignInWith _: User?, error _: Error?) {}
 }
