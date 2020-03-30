@@ -1,4 +1,3 @@
-@@ -1,20 +0,0 @@
 //
 //  LoginViewController.swift
 //  AnnotateAR
@@ -8,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseUI
 
 class LoginViewController: UIViewController {
 
@@ -16,6 +16,22 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+       super.viewDidAppear(animated)
 
+       if Auth.auth().currentUser != nil {
+         
+       } else {
+            guard let authUI = FUIAuth.defaultAuthUI()
+                else { return }
+
+           authUI.delegate = self as? FUIAuthDelegate
+           authUI.providers = [
+           FUIGoogleAuth()]
+        
+           let authViewController = authUI.authViewController()
+           self.present(authViewController, animated: true, completion: nil)
+       }
+   }
 }
 
