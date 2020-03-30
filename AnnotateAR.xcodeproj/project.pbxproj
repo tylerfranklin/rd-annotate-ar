@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10813914243169DE00DD594A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 10813913243169DE00DD594A /* .gitignore */; };
 		109E62A124309691006299A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109E62A024309691006299A5 /* AppDelegate.swift */; };
 		109E62A324309691006299A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109E62A224309691006299A5 /* SceneDelegate.swift */; };
 		109E62A524309691006299A5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109E62A424309691006299A5 /* ContentView.swift */; };
@@ -40,7 +39,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		10813913243169DE00DD594A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		109E629D24309691006299A5 /* AnnotateAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnnotateAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		109E62A024309691006299A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		109E62A224309691006299A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,7 +108,6 @@
 		109E629424309691006299A5 = {
 			isa = PBXGroup;
 			children = (
-				10813913243169DE00DD594A /* .gitignore */,
 				109E629F24309691006299A5 /* AnnotateAR */,
 				109E62B624309693006299A5 /* AnnotateARTests */,
 				109E62C124309693006299A5 /* AnnotateARUITests */,
@@ -295,7 +292,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				10813914243169DE00DD594A /* .gitignore in Resources */,
 				109E62AD24309693006299A5 /* LaunchScreen.storyboard in Resources */,
 				109E62D1243097D9006299A5 /* GoogleService-Info.plist in Resources */,
 				109E62AA24309693006299A5 /* Preview Assets.xcassets in Resources */,
