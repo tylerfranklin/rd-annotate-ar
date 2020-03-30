@@ -24,9 +24,13 @@ class LoginViewController: UIViewController, FUIAuthDelegate {
             else { return }
 
             authUI.delegate = self
-            authUI.providers = [
-                FUIGoogleAuth(),
+
+            let providers: [FUIAuthProvider] = [
+              FUIGoogleAuth(),
+              FUIFacebookAuth(),
+              FUIPhoneAuth(authUI: authUI),
             ]
+            authUI.providers = providers
 
             let authViewController = authUI.authViewController()
             present(authViewController, animated: true, completion: nil)
