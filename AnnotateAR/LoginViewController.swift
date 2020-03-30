@@ -9,7 +9,7 @@
 import FirebaseUI
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, FUIAuthDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
             guard let authUI = FUIAuth.defaultAuthUI()
             else { return }
 
-            authUI.delegate = self as? FUIAuthDelegate
+            authUI.delegate = self
             authUI.providers = [
                 FUIGoogleAuth(),
             ]
