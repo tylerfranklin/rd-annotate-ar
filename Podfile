@@ -14,6 +14,7 @@ target 'AnnotateAR' do
   pod 'FirebaseUI/Facebook'
   pod 'FirebaseUI/Phone'
   pod 'SwiftFormat'
+  pod 'CodableFirebase'
 
   target 'AnnotateARTests' do
     inherit! :search_paths
