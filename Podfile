@@ -15,6 +15,7 @@ target 'AnnotateAR' do
   pod 'FirebaseUI/Facebook'
   pod 'FirebaseUI/Phone'
   pod 'MaterialComponents'
+  pod 'Crashlytics'
   pod 'SwiftFormat'
   pod 'SnapKit'
   pod 'CodableFirebase'
