@@ -98,12 +98,16 @@ PODS:
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
   - PromisesObjC (1.2.8)
+  - SwiftFormat (0.44.6):
+    - SwiftFormat/Core (= 0.44.6)
+  - SwiftFormat/Core (0.44.6)
 
 DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Core
   - FirebaseUI/Auth
   - FirebaseUI/Google
+  - SwiftFormat
 
 SPEC REPOS:
   trunk:
@@ -126,6 +130,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - nanopb
     - PromisesObjC
+    - SwiftFormat
 
 SPEC CHECKSUMS:
   AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
@@ -147,7 +152,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  SwiftFormat: 226f259067268a452772fc2bd635bbcecb5ecb09
 
-PODFILE CHECKSUM: b2c098f03cf014d6b434b4de682d3ca4934c2435
+PODFILE CHECKSUM: 4d867a064a9b7447bc8dd48ab9ad67c8e93d1618
 
 COCOAPODS: 1.9.1
