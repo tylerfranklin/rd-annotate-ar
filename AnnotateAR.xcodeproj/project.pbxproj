@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10307EB32431A01500EB5A9A /* AnnotationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307EB22431A01500EB5A9A /* AnnotationListViewController.swift */; };
+		10307EB52431A03700EB5A9A /* AnnotationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307EB42431A03700EB5A9A /* AnnotationListViewModel.swift */; };
+		10307EB72431A04700EB5A9A /* AnnotationListViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307EB62431A04700EB5A9A /* AnnotationListViewData.swift */; };
 		1081399F24317CB300DD594A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1081399E24317CB300DD594A /* AppDelegate.swift */; };
 		108139A124317CB300DD594A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139A024317CB300DD594A /* SceneDelegate.swift */; };
 		108139A324317CB300DD594A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139A224317CB300DD594A /* LoginViewController.swift */; };
@@ -41,6 +44,9 @@
 
 /* Begin PBXFileReference section */
 		0DD0251FECD96D476E766D2E /* Pods_AnnotateAR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnnotateAR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		10307EB22431A01500EB5A9A /* AnnotationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationListViewController.swift; sourceTree = "<group>"; };
+		10307EB42431A03700EB5A9A /* AnnotationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationListViewModel.swift; sourceTree = "<group>"; };
+		10307EB62431A04700EB5A9A /* AnnotationListViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationListViewData.swift; sourceTree = "<group>"; };
 		1081399B24317CB300DD594A /* AnnotateAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnnotateAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1081399E24317CB300DD594A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		108139A024317CB300DD594A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +101,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		10307EB124319FC600EB5A9A /* AnnotationList */ = {
+			isa = PBXGroup;
+			children = (
+				10307EB22431A01500EB5A9A /* AnnotationListViewController.swift */,
+				10307EB42431A03700EB5A9A /* AnnotationListViewModel.swift */,
+				10307EB62431A04700EB5A9A /* AnnotationListViewData.swift */,
+			);
+			path = AnnotationList;
+			sourceTree = "<group>";
+		};
 		1081399224317CB300DD594A = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +139,7 @@
 				1081399E24317CB300DD594A /* AppDelegate.swift */,
 				108139A024317CB300DD594A /* SceneDelegate.swift */,
 				108139A224317CB300DD594A /* LoginViewController.swift */,
+				10307EB124319FC600EB5A9A /* AnnotationList */,
 				108139A424317CB300DD594A /* Main.storyboard */,
 				108139AA24317CB300DD594A /* Assets.xcassets */,
 				108139AC24317CB300DD594A /* LaunchScreen.storyboard */,
@@ -416,7 +433,10 @@
 			files = (
 				108139A924317CB300DD594A /* AnnotateAR.xcdatamodeld in Sources */,
 				108139A324317CB300DD594A /* LoginViewController.swift in Sources */,
+				10307EB72431A04700EB5A9A /* AnnotationListViewData.swift in Sources */,
 				1081399F24317CB300DD594A /* AppDelegate.swift in Sources */,
+				10307EB52431A03700EB5A9A /* AnnotationListViewModel.swift in Sources */,
+				10307EB32431A01500EB5A9A /* AnnotationListViewController.swift in Sources */,
 				108139A124317CB300DD594A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
