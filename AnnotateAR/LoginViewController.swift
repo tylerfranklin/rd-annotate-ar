@@ -27,7 +27,7 @@ class LoginViewController: UIViewController, FUIAuthDelegate {
 
             let providers: [FUIAuthProvider] = [
               FUIGoogleAuth(),
-              FUIFacebookAuth(),
+//              FUIFacebookAuth(),
               FUIPhoneAuth(authUI: authUI),
             ]
             authUI.providers = providers
