@@ -11,6 +11,7 @@ target 'AnnotateAR' do
   pod 'FirebaseUI/Auth'
   pod 'FirebaseUI/Google'
   pod 'FirebaseUI/Facebook'
+  pod 'FirebaseUI/Phone'
   pod 'SwiftFormat'
 
   target 'AnnotateARTests' do
