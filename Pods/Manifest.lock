@@ -170,6 +170,9 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
   - CodableFirebase (0.2.1)
+  - Crashlytics (3.14.0):
+    - Fabric (~> 1.10.2)
+  - Fabric (1.10.2)
   - FBSDKCoreKit (5.15.1):
     - FBSDKCoreKit/Basics (= 5.15.1)
     - FBSDKCoreKit/Core (= 5.15.1)
@@ -945,6 +948,8 @@ PODS:
 
 DEPENDENCIES:
   - CodableFirebase
+  - Crashlytics
+  - Fabric
   - Firebase/Analytics
   - Firebase/Core
   - Firebase/Firestore
@@ -963,6 +968,8 @@ SPEC REPOS:
     - AppAuth
     - BoringSSL-GRPC
     - CodableFirebase
+    - Crashlytics
+    - Fabric
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -1004,6 +1011,8 @@ SPEC CHECKSUMS:
   AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   CodableFirebase: 0bf201991eeec35eb9fcd987d271ea463cf34a80
+  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
   FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
   Firebase: f378c80340dd41c0ad0914af740c021eb282a04b
@@ -1040,6 +1049,6 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftFormat: 226f259067268a452772fc2bd635bbcecb5ecb09
 
-PODFILE CHECKSUM: 591ab0871740da1b2ad8521f3103a7956073de33
+PODFILE CHECKSUM: 967ad288236253abc2b78d2ed96534bbb12b8e47
 
 COCOAPODS: 1.9.1
