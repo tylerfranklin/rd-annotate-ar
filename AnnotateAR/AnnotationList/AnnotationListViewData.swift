@@ -7,3 +7,19 @@
 //
 
 import Foundation
+
+struct Annotation {
+    var owner: String
+    var place: String
+    var timestamp: Date
+    var title: String
+
+    var dictionary: [String: Any] {
+        return [
+            "owner": owner,
+            "place": place,
+            "timestamp": timestamp,
+            "title": title
+        ]
+    }
+}
