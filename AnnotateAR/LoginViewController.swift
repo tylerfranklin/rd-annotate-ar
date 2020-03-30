@@ -6,32 +6,30 @@
 //  Copyright © 2020 Tyler Franklin. All rights reserved.
 //
 
-import UIKit
 import FirebaseUI
+import UIKit
 
 class LoginViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
 
     override func viewDidAppear(_ animated: Bool) {
-       super.viewDidAppear(animated)
+        super.viewDidAppear(animated)
 
-       if Auth.auth().currentUser != nil {
-         
-       } else {
+        if Auth.auth().currentUser != nil {
+        } else {
             guard let authUI = FUIAuth.defaultAuthUI()
-                else { return }
+            else { return }
 
-           authUI.delegate = self as? FUIAuthDelegate
-           authUI.providers = [
-           FUIGoogleAuth()]
-        
-           let authViewController = authUI.authViewController()
-           self.present(authViewController, animated: true, completion: nil)
-       }
-   }
+            authUI.delegate = self as? FUIAuthDelegate
+            authUI.providers = [
+                FUIGoogleAuth(),
+            ]
+
+            let authViewController = authUI.authViewController()
+            present(authViewController, animated: true, completion: nil)
+        }
+    }
 }
-
