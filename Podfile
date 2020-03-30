@@ -9,6 +9,7 @@ target 'AnnotateAR' do
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
   pod 'Firebase/Firestore'
+  pod 'Firebase/Messaging'
   pod 'FirebaseUI/Auth'
   pod 'FirebaseUI/Google'
   pod 'FirebaseUI/Facebook'
