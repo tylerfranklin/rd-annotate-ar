@@ -1,5 +1,6 @@
+@@ -1,20 +0,0 @@
 //
-//  ViewController.swift
+//  LoginViewController.swift
 //  AnnotateAR
 //
 //  Created by Tyler Franklin on 3/29/20.
@@ -8,7 +9,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

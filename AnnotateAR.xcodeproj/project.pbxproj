@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1081399F24317CB300DD594A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1081399E24317CB300DD594A /* AppDelegate.swift */; };
 		108139A124317CB300DD594A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139A024317CB300DD594A /* SceneDelegate.swift */; };
-		108139A324317CB300DD594A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139A224317CB300DD594A /* ViewController.swift */; };
+		108139A324317CB300DD594A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139A224317CB300DD594A /* LoginViewController.swift */; };
 		108139A624317CB300DD594A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 108139A424317CB300DD594A /* Main.storyboard */; };
 		108139A924317CB300DD594A /* AnnotateAR.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 108139A724317CB300DD594A /* AnnotateAR.xcdatamodeld */; };
 		108139AB24317CB300DD594A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108139AA24317CB300DD594A /* Assets.xcassets */; };
@@ -44,7 +44,7 @@
 		1081399B24317CB300DD594A /* AnnotateAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnnotateAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1081399E24317CB300DD594A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		108139A024317CB300DD594A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		108139A224317CB300DD594A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		108139A224317CB300DD594A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		108139A524317CB300DD594A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		108139A824317CB300DD594A /* AnnotateAR.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AnnotateAR.xcdatamodel; sourceTree = "<group>"; };
 		108139AA24317CB300DD594A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -122,7 +122,7 @@
 			children = (
 				1081399E24317CB300DD594A /* AppDelegate.swift */,
 				108139A024317CB300DD594A /* SceneDelegate.swift */,
-				108139A224317CB300DD594A /* ViewController.swift */,
+				108139A224317CB300DD594A /* LoginViewController.swift */,
 				108139A424317CB300DD594A /* Main.storyboard */,
 				108139AA24317CB300DD594A /* Assets.xcassets */,
 				108139AC24317CB300DD594A /* LaunchScreen.storyboard */,
@@ -415,7 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				108139A924317CB300DD594A /* AnnotateAR.xcdatamodeld in Sources */,
-				108139A324317CB300DD594A /* ViewController.swift in Sources */,
+				108139A324317CB300DD594A /* LoginViewController.swift in Sources */,
 				1081399F24317CB300DD594A /* AppDelegate.swift in Sources */,
 				108139A124317CB300DD594A /* SceneDelegate.swift in Sources */,
 			);
