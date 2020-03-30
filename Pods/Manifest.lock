@@ -65,6 +65,8 @@ PODS:
   - FirebaseUI/Google (8.4.2):
     - FirebaseUI/Auth
     - GoogleSignIn (~> 5.0)
+  - FirebaseUI/Phone (8.4.2):
+    - FirebaseUI/Auth
   - GoogleAppMeasurement (6.4.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -121,6 +123,7 @@ DEPENDENCIES:
   - FirebaseUI/Auth
   - FirebaseUI/Facebook
   - FirebaseUI/Google
+  - FirebaseUI/Phone
   - SwiftFormat
 
 SPEC REPOS:
@@ -172,6 +175,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SwiftFormat: 226f259067268a452772fc2bd635bbcecb5ecb09
 
-PODFILE CHECKSUM: 0625df98311af097ad538156a27724afde4506aa
+PODFILE CHECKSUM: b94231465457706538b42626832d00884468587b
 
 COCOAPODS: 1.9.1
