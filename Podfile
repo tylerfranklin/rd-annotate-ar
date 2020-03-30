@@ -8,6 +8,7 @@ target 'AnnotateAR' do
   # Pods for AnnotateAR
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
+  pod 'Firebase/Firestore'
   pod 'FirebaseUI/Auth'
   pod 'FirebaseUI/Google'
   pod 'FirebaseUI/Facebook'
