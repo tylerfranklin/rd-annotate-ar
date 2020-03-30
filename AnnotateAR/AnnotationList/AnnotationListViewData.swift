@@ -23,3 +23,7 @@ struct Annotation {
         ]
     }
 }
+
+struct AnnotationListViewData {
+    var annotations: [Annotation]
+}
