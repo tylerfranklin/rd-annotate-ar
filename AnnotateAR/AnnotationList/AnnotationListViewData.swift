@@ -7,8 +7,13 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
-struct Annotation {
+protocol DocumentSerializable {
+    init?(dictionary: [String: Any])
+}
+
+struct Annotation: Codable {
     var owner: String
     var place: String
     var timestamp: Date
@@ -21,6 +26,19 @@ struct Annotation {
             "timestamp": timestamp,
             "title": title
         ]
+    }
+}
+
+extension Annotation: DocumentSerializable {
+
+    init?(dictionary: [String : Any]) {
+        guard let owner = dictionary["owner"] as? String,
+            let place = dictionary["place"] as? String,
+            let timestamp = dictionary["timestamp"] as? Date,
+            let title = dictionary["title"] as? String
+            else { return nil }
+
+        self.init(owner: owner, place: place, timestamp: timestamp, title: title)
     }
 }
 
