@@ -20,6 +20,7 @@ target 'AnnotateAR' do
   pod 'SwiftFormat'
   pod 'SnapKit'
   pod 'CodableFirebase'
+  pod 'GoogleDataTransport'
 
   target 'AnnotateARTests' do
     inherit! :search_paths
