@@ -27,10 +27,10 @@ public protocol TimestampType: FirestoreDecodable, FirestoreEncodable {
 
 open class FirestoreDecoder {
     public init() {}
-    
-    open var userInfo: [CodingUserInfoKey : Any] = [:]
-    
-    open func decode<T : Decodable>(_ type: T.Type, from container: [String: Any]) throws -> T {
+
+    open var userInfo: [CodingUserInfoKey: Any] = [:]
+
+    open func decode<T: Decodable>(_: T.Type, from container: [String: Any]) throws -> T {
         let options = _FirebaseDecoder._Options(
             dateDecodingStrategy: nil,
             dataDecodingStrategy: nil,
@@ -41,7 +41,7 @@ open class FirestoreDecoder {
         guard let value = try decoder.unbox(container, as: T.self) else {
             throw DecodingError.valueNotFound(T.self, DecodingError.Context(codingPath: [], debugDescription: "The given dictionary was invalid"))
         }
-        
+
         return value
     }
 }
@@ -57,7 +57,7 @@ extension GeoPointType {
         let longitude = try container.decode(Double.self, forKey: .longitude)
         self.init(latitude: latitude, longitude: longitude)
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: GeoPointKeys.self)
         try container.encode(latitude, forKey: .latitude)
@@ -71,13 +71,13 @@ enum DocumentReferenceError: Error {
 }
 
 extension FirestoreDecodable {
-    public init(from decoder: Decoder) throws {
+    public init(from _: Decoder) throws {
         throw DocumentReferenceError.typeIsNotSupported
     }
 }
 
 extension FirestoreEncodable {
-    public func encode(to encoder: Encoder) throws {
+    public func encode(to _: Encoder) throws {
         throw DocumentReferenceError.typeIsNotSupported
     }
 }
@@ -87,9 +87,9 @@ extension TimestampType {
         let container = try decoder.singleValueContainer()
         self.init(date: try container.decode(Date.self))
     }
-  
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(self.dateValue())
+        try container.encode(dateValue())
     }
 }

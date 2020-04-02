@@ -50,21 +50,21 @@ extension FormatOptions {
         private(set) var type: ArgumentType
 
         var deprecationMessage: String? {
-            FormatOptions.Descriptor.deprecatedMessage[argumentName]
+            return FormatOptions.Descriptor.deprecatedMessage[argumentName]
         }
 
         var isDeprecated: Bool {
-            deprecationMessage != nil
+            return deprecationMessage != nil
         }
 
         var isRenamed: Bool {
-            deprecationMessage != nil && FormatOptions.Descriptor.all.contains(where: {
+            return deprecationMessage != nil && FormatOptions.Descriptor.all.contains(where: {
                 $0.propertyName == propertyName && $0.argumentName != argumentName
             })
         }
 
         var defaultArgument: String {
-            fromOptions(FormatOptions.default)
+            return fromOptions(FormatOptions.default)
         }
 
         func validateArgument(_ arg: String) -> Bool {

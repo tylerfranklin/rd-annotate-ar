@@ -143,7 +143,7 @@ func preprocessArguments(_ args: [String], _ names: [String]) throws -> [String:
 
 // Parse a comma-delimited list of items
 func parseCommaDelimitedList(_ string: String) -> [String] {
-    string.components(separatedBy: ",").compactMap {
+    return string.components(separatedBy: ",").compactMap {
         let item = $0.trimmingCharacters(in: .whitespacesAndNewlines)
         return item.isEmpty ? nil : item
     }
@@ -175,7 +175,7 @@ func parsePath(_ path: String, for argument: String, in directory: String) throw
 
 // Parse one or more comma-delimited file paths
 func parsePaths(_ paths: String, for argument: String, in directory: String) throws -> [URL] {
-    try parseCommaDelimitedList(paths).map {
+    return try parseCommaDelimitedList(paths).map {
         try parsePath($0, for: argument, in: directory)
     }
 }
@@ -293,7 +293,7 @@ func serialize(options: Options,
 // Serialize arguments
 func serialize(arguments: [String: String],
                separator: String = "\n") -> String {
-    arguments.map {
+    return arguments.map {
         var value = $1
         if value.contains(" ") {
             value = "\"\(value.replacingOccurrences(of: "\"", with: "\\\""))\""

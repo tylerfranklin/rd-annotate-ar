@@ -10,13 +10,13 @@ import Foundation
 
 extension FormatRule {
     var examples: String? {
-        examplesByRuleName[name]
+        return examplesByRuleName[name]
     }
 }
 
 extension _FormatRules {
     var examplesByName: [String: String] {
-        examplesByRuleName
+        return examplesByRuleName
     }
 }
 

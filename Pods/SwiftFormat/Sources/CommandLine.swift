@@ -56,12 +56,12 @@ public struct CLI {
 
     /// Run the CLI with the specified input arguments
     public static func run(in directory: String, with args: [String] = CommandLine.arguments) -> ExitCode {
-        processArguments(args, in: directory)
+        return processArguments(args, in: directory)
     }
 
     /// Run the CLI with the specified input string (this will be parsed into multiple arguments)
     public static func run(in directory: String, with argumentString: String) -> ExitCode {
-        run(in: directory, with: parseArguments(argumentString))
+        return run(in: directory, with: parseArguments(argumentString))
     }
 }
 
@@ -630,7 +630,7 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
 }
 
 func parseFileList(_ source: String, in directory: String) -> [URL] {
-    source
+    return source
         .components(separatedBy: .newlines)
         .map { $0.components(separatedBy: "#")[0].trimmingCharacters(in: .whitespaces) }
         .filter { !$0.isEmpty }

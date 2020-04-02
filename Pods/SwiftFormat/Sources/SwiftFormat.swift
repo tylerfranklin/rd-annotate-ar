@@ -58,11 +58,11 @@ public enum FormatError: Error, CustomStringConvertible, LocalizedError, CustomN
     }
 
     public var localizedDescription: String {
-        "Error: \(description)."
+        return "Error: \(description)."
     }
 
     public var errorUserInfo: [String: Any] {
-        [NSLocalizedDescriptionKey: localizedDescription]
+        return [NSLocalizedDescriptionKey: localizedDescription]
     }
 }
 
@@ -349,7 +349,7 @@ public struct SourceOffset: Equatable, CustomStringConvertible {
     }
 
     public var description: String {
-        "\(line):\(column)"
+        return "\(line):\(column)"
     }
 }
 
@@ -418,7 +418,7 @@ public func newOffset(for offset: SourceOffset, in tokens: [Token], tabWidth: In
 
 /// Process parsing errors
 public func parsingError(for tokens: [Token], options: FormatOptions) -> FormatError? {
-    if let index = tokens.firstIndex(where: {
+    if let index = tokens.index(where: {
         guard options.fragment || !$0.isError else { return true }
         guard !options.ignoreConflictMarkers, case let .operator(string, _) = $0 else { return false }
         return string.hasPrefix("<<<<<") || string.hasPrefix("=====") || string.hasPrefix(">>>>>")
@@ -458,12 +458,12 @@ public func applyRules(_ rules: [FormatRule],
                        to originalTokens: [Token],
                        with options: FormatOptions,
                        callback: ((Int, [Token]) -> Void)?) throws -> [Token] {
-    try applyRules(rules,
-                   to: originalTokens,
-                   with: options,
-                   trackChanges: false,
-                   range: nil,
-                   callback: callback).tokens
+    return try applyRules(rules,
+                          to: originalTokens,
+                          with: options,
+                          trackChanges: false,
+                          range: nil,
+                          callback: callback).tokens
 }
 
 /// Apply specified rules to a token array and optionally capture list of changes
@@ -550,26 +550,26 @@ private func applyRules(
 /// Returns the formatted token array
 public func format(_ tokens: [Token], rules: [FormatRule] = FormatRules.default,
                    options: FormatOptions = .default, range: Range<Int>? = nil) throws -> [Token] {
-    try applyRules(rules, to: tokens, with: options, trackChanges: false, range: range).tokens
+    return try applyRules(rules, to: tokens, with: options, trackChanges: false, range: range).tokens
 }
 
 /// Format code with specified rules and options
 public func format(_ source: String, rules: [FormatRule] = FormatRules.default,
                    options: FormatOptions = .default) throws -> String {
-    sourceCode(for: try format(tokenize(source), rules: rules, options: options))
+    return sourceCode(for: try format(tokenize(source), rules: rules, options: options))
 }
 
 /// Lint a pre-parsed token array
 /// Returns the list of edits made
 public func lint(_ tokens: [Token], rules: [FormatRule] = FormatRules.default,
                  options: FormatOptions = .default) throws -> [Formatter.Change] {
-    try applyRules(rules, to: tokens, with: options, trackChanges: true, range: nil).changes
+    return try applyRules(rules, to: tokens, with: options, trackChanges: true, range: nil).changes
 }
 
 /// Lint code with specified rules and options
 public func lint(_ source: String, rules: [FormatRule] = FormatRules.default,
                  options: FormatOptions = .default) throws -> [Formatter.Change] {
-    try lint(tokenize(source), rules: rules, options: options)
+    return try lint(tokenize(source), rules: rules, options: options)
 }
 
 // MARK: Path utilities

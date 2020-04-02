@@ -69,7 +69,7 @@ extension Formatter {
 
     /// Returns the length (in characters) of the specified token range
     func lineLength(from start: Int, upTo end: Int) -> Int {
-        tokens[start ..< end].reduce(0) { total, token in
+        return tokens[start ..< end].reduce(0) { total, token in
             total + tokenLength(token)
         }
     }
@@ -126,7 +126,7 @@ extension Formatter {
     }
 
     func specifiersForType(at index: Int, contains: String) -> Bool {
-        specifiersForType(at: index, contains: { $1.string == contains })
+        return specifiersForType(at: index, contains: { $1.string == contains })
     }
 
     // first index of specifier list
@@ -257,7 +257,7 @@ extension Formatter {
 
     /// Returns true if token is inside the return type of a function or subscript
     func isInReturnType(at i: Int) -> Bool {
-        startOfReturnType(at: i) != nil
+        return startOfReturnType(at: i) != nil
     }
 
     /// Returns the index of the `->` operator for the current return type declaration if
@@ -443,7 +443,7 @@ extension Formatter {
     }
 
     func lastSignificantKeyword(at i: Int) -> String? {
-        indexOfLastSignificantKeyword(at: i).map { tokens[$0].string }
+        return indexOfLastSignificantKeyword(at: i).map { tokens[$0].string }
     }
 
     func indexOfLastSignificantKeyword(at i: Int, excluding: [String] = []) -> Int? {
@@ -483,7 +483,7 @@ extension Formatter {
     }
 
     func isAttribute(at i: Int) -> Bool {
-        startOfAttribute(at: i) != nil
+        return startOfAttribute(at: i) != nil
     }
 
     func startOfAttribute(at i: Int) -> Int? {
@@ -1022,7 +1022,7 @@ extension Formatter {
 
             } else if maxWidth > 0, hasMultipleArguments {
                 func willWrapAtStartOfReturnType(maxWidth: Int) -> Bool {
-                    isInReturnType(at: i) && maxWidth < lineLength(at: i)
+                    return isInReturnType(at: i) && maxWidth < lineLength(at: i)
                 }
 
                 func startOfNextScopeNotInReturnType() -> Int? {

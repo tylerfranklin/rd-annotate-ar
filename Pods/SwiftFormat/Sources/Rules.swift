@@ -40,11 +40,11 @@ public final class FormatRule: Equatable, Comparable {
     let sharedOptions: [String]
 
     var deprecationMessage: String? {
-        FormatRule.deprecatedMessage[name]
+        return FormatRule.deprecatedMessage[name]
     }
 
     var isDeprecated: Bool {
-        deprecationMessage != nil
+        return deprecationMessage != nil
     }
 
     fileprivate init(help: String,
@@ -66,11 +66,11 @@ public final class FormatRule: Equatable, Comparable {
     }
 
     public static func == (lhs: FormatRule, rhs: FormatRule) -> Bool {
-        lhs === rhs
+        return lhs === rhs
     }
 
     public static func < (lhs: FormatRule, rhs: FormatRule) -> Bool {
-        rhs.orderAfter.contains(lhs.name) || lhs.name < rhs.name
+        return rhs.orderAfter.contains(lhs.name) || lhs.name < rhs.name
     }
 
     static let deprecatedMessage = [
@@ -106,25 +106,25 @@ private let _disabledByDefault = _deprecatedRules + ["isEmpty"]
 
 public extension _FormatRules {
     /// A Dictionary of rules by name
-    var byName: [String: FormatRule] { rulesByName }
+    var byName: [String: FormatRule] { return rulesByName }
 
     /// All rules
-    var all: [FormatRule] { _allRules }
+    var all: [FormatRule] { return _allRules }
 
     /// Default active rules
-    var `default`: [FormatRule] { _defaultRules }
+    var `default`: [FormatRule] { return _defaultRules }
 
     /// Rules that are disabled by default
-    var disabledByDefault: [String] { _disabledByDefault }
+    var disabledByDefault: [String] { return _disabledByDefault }
 
     /// Just the specified rules
     func named(_ names: [String]) -> [FormatRule] {
-        Array(names.sorted().compactMap { rulesByName[$0] })
+        return Array(names.sorted().compactMap { rulesByName[$0] })
     }
 
     /// All rules except those specified
     func all(except rules: [String]) -> [FormatRule] {
-        allRules(except: rules)
+        return allRules(except: rules)
     }
 }
 
@@ -902,7 +902,7 @@ public struct _FormatRules {
 
         func isGuardElseClause(at index: Int, token: Token) -> Bool {
             func hasKeyword(_ string: String) -> Bool {
-                formatter.index(of: .keyword(string), after: formatter.startOfLine(at: index) - 1) ?? index < index
+                return formatter.index(of: .keyword(string), after: formatter.startOfLine(at: index) - 1) ?? index < index
             }
             let nextToken = formatter.next(.nonSpaceOrCommentOrLinebreak, after: index)
 
@@ -2734,7 +2734,7 @@ public struct _FormatRules {
         func removeUsed<T>(from argNames: inout [String], with associatedData: inout [T], in range: CountableRange<Int>) {
             for i in range {
                 let token = formatter.tokens[i]
-                if case .identifier = token, let index = argNames.firstIndex(of: token.unescaped()),
+                if case .identifier = token, let index = argNames.index(of: token.unescaped()),
                     formatter.last(.nonSpaceOrCommentOrLinebreak, before: i)?.isOperator(".") == false,
                     formatter.next(.nonSpaceOrCommentOrLinebreak, after: i) != .delimiter(":") ||
                     formatter.currentScope(at: i) == .startOfScope("[") {

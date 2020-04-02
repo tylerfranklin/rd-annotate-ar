@@ -105,7 +105,7 @@ public struct Version: RawRepresentable, Comparable, ExpressibleByStringLiteral,
     }
 
     public static func < (lhs: Version, rhs: Version) -> Bool {
-        lhs.rawValue.compare(
+        return lhs.rawValue.compare(
             rhs.rawValue,
             options: .numeric,
             locale: Locale(identifier: "en_US")
@@ -113,7 +113,7 @@ public struct Version: RawRepresentable, Comparable, ExpressibleByStringLiteral,
     }
 
     public var description: String {
-        rawValue
+        return rawValue
     }
 }
 
@@ -167,7 +167,7 @@ public struct FileInfo: Equatable, CustomStringConvertible {
     var creationDate: Date?
 
     var fileName: String? {
-        filePath.map { URL(fileURLWithPath: $0).lastPathComponent }
+        return filePath.map { URL(fileURLWithPath: $0).lastPathComponent }
     }
 
     public init(filePath: String? = nil, creationDate: Date? = nil) {
@@ -176,7 +176,7 @@ public struct FileInfo: Equatable, CustomStringConvertible {
     }
 
     public var description: String {
-        "\(fileName ?? "");\(creationDate.map { "\($0)" } ?? "")"
+        return "\(fileName ?? "");\(creationDate.map { "\($0)" } ?? "")"
     }
 }
 
@@ -217,7 +217,7 @@ public enum Grouping: Equatable, RawRepresentable, CustomStringConvertible {
     }
 
     public var description: String {
-        rawValue
+        return rawValue
     }
 }
 
@@ -379,7 +379,7 @@ public struct FormatOptions: CustomStringConvertible {
     }
 
     public var useTabs: Bool {
-        indent.first == "\t"
+        return indent.first == "\t"
     }
 
     public var allOptions: [String: Any] {
