@@ -6,9 +6,9 @@
 //  Copyright © 2020 Tyler Franklin. All rights reserved.
 //
 
-import Foundation
-import FirebaseFirestore
 import CodableFirebase
+import FirebaseFirestore
+import Foundation
 
 class AnnotationListViewModel {
     var annotationsReference: DocumentReference?
@@ -41,7 +41,7 @@ class AnnotationListViewModel {
         guard let query = query else { return }
         stopObserving()
 
-        listener = query.addSnapshotListener { [unowned self] (snapshot, error) in
+        listener = query.addSnapshotListener { [unowned self] snapshot, error in
 
             guard let snapshot = snapshot else {
                 print("Error fetching snapshot results: \(error!)")
@@ -53,7 +53,7 @@ class AnnotationListViewModel {
                     let model = try FirestoreDecoder().decode(Annotation.self, from: document.data())
                     return model
                 } catch {
-                    print("error parsing document: \(document.data())")
+                    print("error parsing annotation: \(error) \(document.data())")
                     return nil
                 }
             }
