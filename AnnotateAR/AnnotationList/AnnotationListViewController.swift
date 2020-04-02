@@ -6,63 +6,78 @@
 //  Copyright © 2020 Tyler Franklin. All rights reserved.
 //
 
-import UIKit
-import SnapKit
 import FirebaseFirestore
+import SnapKit
+import UIKit
 
-class AnnotationListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    var viewModel: AnnotationListViewModel!
+class AnnotationListViewController: ViewController<AnnotationListViewModel> {
+    @IBOutlet var tableView: UITableView!
+    private var selectedAnnotation: Annotation?
+    private var selectedAnnotationReference: DocumentReference?
 
-    @IBOutlet weak var tableView: UITableView!
-       private var selectedAnnotation: Annotation?
-       @IBOutlet weak var createAnnotationButton: UIView!
+    @IBOutlet var createAnnotationButton: UIButton!
+    private let tableViewAdapter = TableViewAdapter<Annotation>()
 
-       private var listener: ListenerRegistration?
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-       override func viewDidLoad() {
-           super.viewDidLoad()
+        viewModel.didChangeData = { [weak self] data in
+            guard let strongSelf = self else { return }
+            strongSelf.tableViewAdapter.update(with: data.annotations)
+            strongSelf.tableView.reloadData()
+        }
 
-           viewModel.didChangeData = { [weak self] data in
-               guard let strongSelf = self else { return }
-               strongSelf.tableView.reloadData()
-           }
+        tableView.dataSource = tableViewAdapter
+        tableView.delegate = tableViewAdapter
+        tableView.estimatedRowHeight = 200
 
-           tableView.dataSource = self
-           tableView.delegate = self
-       }
+        tableViewAdapter.cellFactory = { tableView, _, cellData in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? AnnotationTableViewCell else { return UITableViewCell() }
+            cell.populate(annotation: cellData)
+            return cell
+        }
 
-       override func viewWillAppear(_ animated: Bool) {
-           super.viewWillAppear(animated)
-           viewModel.observeQuery()
-       }
+        tableViewAdapter.didSelectItem = { [weak self] rowData, indexPath in
+            guard let strongSelf = self else { return }
+            strongSelf.tableView.deselectRow(at: indexPath, animated: true)
+            strongSelf.selectedAnnotation = rowData
+            strongSelf.selectedAnnotationReference = strongSelf.viewModel.documents[indexPath.row].reference
+            strongSelf.detailPressed()
+        }
+    }
 
-       override func viewWillDisappear(_ animated: Bool) {
-           super.viewWillDisappear(animated)
-           viewModel.stopObserving()
-       }
+    func detailPressed() {
+        performSegue(withIdentifier: "showDetail", sender: self)
+    }
 
-       deinit {
-           listener?.remove()
-       }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
 
-       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-           let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! AnnotationTableViewCell
-           let annotation = viewModel.viewData.annotations[indexPath.row]
-           cell.populate(annotation: annotation)
-           return cell
-       }
+        if segue.identifier == "showDetail" {
+            let detailViewModel = AnnotationDetailViewModel(viewData: AnnotationDetailViewData(annotation: selectedAnnotation!, annotationReference: selectedAnnotationReference!, collectors: [], isUserACollector: false))
+            let vc = segue.destination as? AnnotationDetailViewController
+            vc?.viewModel = detailViewModel
+            return
+        }
 
-       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-           return viewModel.viewData.annotations.count
-       }
+        guard
+            let viewController = segue.destination as? CreateAnnotationViewController
+        else { return }
 
-       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           tableView.deselectRow(at: indexPath, animated: true)
-       }
-}
+        viewController.viewModel = CreateAnnotationViewModel()
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.observeQuery()
+    }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.stopObserving()
+    }
 
-
+    deinit {
+        viewModel.stopObserving()
     }
 }
