@@ -61,21 +61,8 @@ class AnnotationListViewController: UIViewController, UITableViewDataSource, UIT
        }
 }
 
-class AnnotationTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var organiserLabel: UILabel!
-    @IBOutlet weak var annotationIcon: UIImageView!
-    @IBOutlet weak var annotationTitleLabel: UILabel!
 
-    func populate(annotation: Annotation) {
-        organiserLabel.text = annotation.owner
-        annotationTitleLabel.text = annotation.title
 
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
-
-        timeLabel.text = dateFormatter.string(from: annotation.timestamp)
     }
 }
