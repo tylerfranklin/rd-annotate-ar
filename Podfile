@@ -12,7 +12,7 @@ target 'AnnotateAR' do
   pod 'Firebase/Messaging'
   pod 'FirebaseUI/Auth'
   pod 'FirebaseUI/Google'
-  pod 'FirebaseUI/Facebook'
+#  pod 'FirebaseUI/Facebook'
   pod 'FirebaseUI/Phone'
   pod 'MaterialComponents'
   pod 'Crashlytics'
