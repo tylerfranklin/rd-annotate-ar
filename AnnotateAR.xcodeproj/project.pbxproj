@@ -10,16 +10,29 @@
 		10307EB32431A01500EB5A9A /* AnnotationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307EB22431A01500EB5A9A /* AnnotationListViewController.swift */; };
 		10307EB52431A03700EB5A9A /* AnnotationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307EB42431A03700EB5A9A /* AnnotationListViewModel.swift */; };
 		10307EB72431A04700EB5A9A /* AnnotationListViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307EB62431A04700EB5A9A /* AnnotationListViewData.swift */; };
+		10307EB92431B08900EB5A9A /* ViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307EB82431B08900EB5A9A /* ViewController+Ext.swift */; };
+		10307F0F2431DAA300EB5A9A /* TableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F0E2431DAA300EB5A9A /* TableViewAdapter.swift */; };
+		10307F112431DB0500EB5A9A /* AnnotationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F102431DB0500EB5A9A /* AnnotationTableViewCell.swift */; };
+		10307F182431DD7300EB5A9A /* CreateAnnotationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F172431DD7300EB5A9A /* CreateAnnotationViewController.swift */; };
+		10307F1A2431DDA100EB5A9A /* CreateAnnotationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F192431DDA100EB5A9A /* CreateAnnotationViewModel.swift */; };
+		10307F1D2431E1DD00EB5A9A /* AnnotationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F1C2431E1DD00EB5A9A /* AnnotationDetailViewController.swift */; };
+		10307F1F2431E20800EB5A9A /* AnnotationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F1E2431E20800EB5A9A /* AnnotationDetailViewModel.swift */; };
+		10307F212431E21800EB5A9A /* AnnotationDetailViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F202431E21800EB5A9A /* AnnotationDetailViewData.swift */; };
+		10307F232431E34F00EB5A9A /* AnnotationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F222431E34F00EB5A9A /* AnnotationService.swift */; };
+		10307F252431E4E400EB5A9A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F242431E4E400EB5A9A /* NetworkService.swift */; };
+		10307F2C2431FACE00EB5A9A /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10307F2B2431FACE00EB5A9A /* Annotation.swift */; };
+		10307F3624326EA500EB5A9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10307F3424326EA500EB5A9A /* Main.storyboard */; };
 		1081399F24317CB300DD594A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1081399E24317CB300DD594A /* AppDelegate.swift */; };
 		108139A124317CB300DD594A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139A024317CB300DD594A /* SceneDelegate.swift */; };
 		108139A324317CB300DD594A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139A224317CB300DD594A /* LoginViewController.swift */; };
-		108139A624317CB300DD594A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 108139A424317CB300DD594A /* Main.storyboard */; };
 		108139A924317CB300DD594A /* AnnotateAR.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 108139A724317CB300DD594A /* AnnotateAR.xcdatamodeld */; };
 		108139AB24317CB300DD594A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108139AA24317CB300DD594A /* Assets.xcassets */; };
 		108139AE24317CB300DD594A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 108139AC24317CB300DD594A /* LaunchScreen.storyboard */; };
 		108139B924317CB300DD594A /* AnnotateARTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139B824317CB300DD594A /* AnnotateARTests.swift */; };
 		108139C424317CB300DD594A /* AnnotateARUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108139C324317CB300DD594A /* AnnotateARUITests.swift */; };
 		108139D224317D2700DD594A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 108139D124317D2700DD594A /* GoogleService-Info.plist */; };
+		10F0D439243274400091C6EF /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F0D438243274400091C6EF /* AuthenticationServices.framework */; };
+		10F0D43B243274990091C6EF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F0D43A243274990091C6EF /* CloudKit.framework */; };
 		44B8475469384BE502A73EE9 /* Pods_AnnotateARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A497E561348991A3D024D2D6 /* Pods_AnnotateARUITests.framework */; };
 		F24CE5F4835A57726168033C /* Pods_AnnotateAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD0251FECD96D476E766D2E /* Pods_AnnotateAR.framework */; };
 		F6003B9A4A9167EC79E8594C /* Pods_AnnotateARTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7B32402241D37DB487D70FF /* Pods_AnnotateARTests.framework */; };
@@ -47,11 +60,23 @@
 		10307EB22431A01500EB5A9A /* AnnotationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationListViewController.swift; sourceTree = "<group>"; };
 		10307EB42431A03700EB5A9A /* AnnotationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationListViewModel.swift; sourceTree = "<group>"; };
 		10307EB62431A04700EB5A9A /* AnnotationListViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationListViewData.swift; sourceTree = "<group>"; };
-		1081399B24317CB300DD594A /* AnnotateAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnnotateAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		10307EB82431B08900EB5A9A /* ViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Ext.swift"; sourceTree = "<group>"; };
+		10307F0E2431DAA300EB5A9A /* TableViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAdapter.swift; sourceTree = "<group>"; };
+		10307F102431DB0500EB5A9A /* AnnotationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationTableViewCell.swift; sourceTree = "<group>"; };
+		10307F172431DD7300EB5A9A /* CreateAnnotationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAnnotationViewController.swift; sourceTree = "<group>"; };
+		10307F192431DDA100EB5A9A /* CreateAnnotationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAnnotationViewModel.swift; sourceTree = "<group>"; };
+		10307F1C2431E1DD00EB5A9A /* AnnotationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewController.swift; sourceTree = "<group>"; };
+		10307F1E2431E20800EB5A9A /* AnnotationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewModel.swift; sourceTree = "<group>"; };
+		10307F202431E21800EB5A9A /* AnnotationDetailViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDetailViewData.swift; sourceTree = "<group>"; };
+		10307F222431E34F00EB5A9A /* AnnotationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationService.swift; sourceTree = "<group>"; };
+		10307F242431E4E400EB5A9A /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		10307F2B2431FACE00EB5A9A /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
+		10307F2F243204EA00EB5A9A /* AnnotateAR.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AnnotateAR.entitlements; sourceTree = "<group>"; };
+		10307F3524326EA500EB5A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1081399B24317CB300DD594A /* Annotate AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Annotate AR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1081399E24317CB300DD594A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		108139A024317CB300DD594A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		108139A224317CB300DD594A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		108139A524317CB300DD594A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		108139A824317CB300DD594A /* AnnotateAR.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AnnotateAR.xcdatamodel; sourceTree = "<group>"; };
 		108139AA24317CB300DD594A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		108139AD24317CB300DD594A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -63,6 +88,8 @@
 		108139C324317CB300DD594A /* AnnotateARUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotateARUITests.swift; sourceTree = "<group>"; };
 		108139C524317CB300DD594A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		108139D124317D2700DD594A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		10F0D438243274400091C6EF /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		10F0D43A243274990091C6EF /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2BCECA23F0AB48A5E5B26770 /* Pods-AnnotateAR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateAR.debug.xcconfig"; path = "Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR.debug.xcconfig"; sourceTree = "<group>"; };
 		3ECA743E68631D10D550BC05 /* Pods-AnnotateARTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARTests.debug.xcconfig"; path = "Target Support Files/Pods-AnnotateARTests/Pods-AnnotateARTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4CD9E0559DE22348A6E5AD76 /* Pods-AnnotateARTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARTests.release.xcconfig"; path = "Target Support Files/Pods-AnnotateARTests/Pods-AnnotateARTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -78,6 +105,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10F0D43B243274990091C6EF /* CloudKit.framework in Frameworks */,
+				10F0D439243274400091C6EF /* AuthenticationServices.framework in Frameworks */,
 				F24CE5F4835A57726168033C /* Pods_AnnotateAR.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,8 +136,38 @@
 				10307EB22431A01500EB5A9A /* AnnotationListViewController.swift */,
 				10307EB42431A03700EB5A9A /* AnnotationListViewModel.swift */,
 				10307EB62431A04700EB5A9A /* AnnotationListViewData.swift */,
+				10307F102431DB0500EB5A9A /* AnnotationTableViewCell.swift */,
 			);
 			path = AnnotationList;
+			sourceTree = "<group>";
+		};
+		10307F122431DCEF00EB5A9A /* CreateAnnotation */ = {
+			isa = PBXGroup;
+			children = (
+				10307F172431DD7300EB5A9A /* CreateAnnotationViewController.swift */,
+				10307F192431DDA100EB5A9A /* CreateAnnotationViewModel.swift */,
+			);
+			path = CreateAnnotation;
+			sourceTree = "<group>";
+		};
+		10307F1B2431E1A400EB5A9A /* AnnotationDetail */ = {
+			isa = PBXGroup;
+			children = (
+				10307F1C2431E1DD00EB5A9A /* AnnotationDetailViewController.swift */,
+				10307F1E2431E20800EB5A9A /* AnnotationDetailViewModel.swift */,
+				10307F202431E21800EB5A9A /* AnnotationDetailViewData.swift */,
+			);
+			path = AnnotationDetail;
+			sourceTree = "<group>";
+		};
+		10307F2A2431F95900EB5A9A /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				10307EB82431B08900EB5A9A /* ViewController+Ext.swift */,
+				10307F0E2431DAA300EB5A9A /* TableViewAdapter.swift */,
+				10307F222431E34F00EB5A9A /* AnnotationService.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		1081399224317CB300DD594A = {
@@ -126,7 +185,7 @@
 		1081399C24317CB300DD594A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1081399B24317CB300DD594A /* AnnotateAR.app */,
+				1081399B24317CB300DD594A /* Annotate AR.app */,
 				108139B424317CB300DD594A /* AnnotateARTests.xctest */,
 				108139BF24317CB300DD594A /* AnnotateARUITests.xctest */,
 			);
@@ -136,16 +195,22 @@
 		1081399D24317CB300DD594A /* AnnotateAR */ = {
 			isa = PBXGroup;
 			children = (
-				1081399E24317CB300DD594A /* AppDelegate.swift */,
-				108139A024317CB300DD594A /* SceneDelegate.swift */,
-				108139A224317CB300DD594A /* LoginViewController.swift */,
+				10307F2F243204EA00EB5A9A /* AnnotateAR.entitlements */,
+				10307F2A2431F95900EB5A9A /* Common */,
+				10307F122431DCEF00EB5A9A /* CreateAnnotation */,
+				10307F1B2431E1A400EB5A9A /* AnnotationDetail */,
 				10307EB124319FC600EB5A9A /* AnnotationList */,
-				108139A424317CB300DD594A /* Main.storyboard */,
+				108139A724317CB300DD594A /* AnnotateAR.xcdatamodeld */,
+				108139D124317D2700DD594A /* GoogleService-Info.plist */,
+				1081399E24317CB300DD594A /* AppDelegate.swift */,
+				108139A224317CB300DD594A /* LoginViewController.swift */,
+				10307F3424326EA500EB5A9A /* Main.storyboard */,
 				108139AA24317CB300DD594A /* Assets.xcassets */,
 				108139AC24317CB300DD594A /* LaunchScreen.storyboard */,
 				108139AF24317CB300DD594A /* Info.plist */,
-				108139D124317D2700DD594A /* GoogleService-Info.plist */,
-				108139A724317CB300DD594A /* AnnotateAR.xcdatamodeld */,
+				10307F2B2431FACE00EB5A9A /* Annotation.swift */,
+				108139A024317CB300DD594A /* SceneDelegate.swift */,
+				10307F242431E4E400EB5A9A /* NetworkService.swift */,
 			);
 			path = AnnotateAR;
 			sourceTree = "<group>";
@@ -184,6 +249,8 @@
 		DB40390051D7BD92D8E895BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				10F0D43A243274990091C6EF /* CloudKit.framework */,
+				10F0D438243274400091C6EF /* AuthenticationServices.framework */,
 				0DD0251FECD96D476E766D2E /* Pods_AnnotateAR.framework */,
 				B7B32402241D37DB487D70FF /* Pods_AnnotateARTests.framework */,
 				A497E561348991A3D024D2D6 /* Pods_AnnotateARUITests.framework */,
@@ -211,7 +278,7 @@
 			);
 			name = AnnotateAR;
 			productName = AnnotateAR;
-			productReference = 1081399B24317CB300DD594A /* AnnotateAR.app */;
+			productReference = 1081399B24317CB300DD594A /* Annotate AR.app */;
 			productType = "com.apple.product-type.application";
 		};
 		108139B324317CB300DD594A /* AnnotateARTests */ = {
@@ -301,9 +368,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				108139AE24317CB300DD594A /* LaunchScreen.storyboard in Resources */,
+				10307F3624326EA500EB5A9A /* Main.storyboard in Resources */,
 				108139D224317D2700DD594A /* GoogleService-Info.plist in Resources */,
 				108139AB24317CB300DD594A /* Assets.xcassets in Resources */,
-				108139A624317CB300DD594A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,12 +498,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10307F182431DD7300EB5A9A /* CreateAnnotationViewController.swift in Sources */,
+				10307F112431DB0500EB5A9A /* AnnotationTableViewCell.swift in Sources */,
 				108139A924317CB300DD594A /* AnnotateAR.xcdatamodeld in Sources */,
 				108139A324317CB300DD594A /* LoginViewController.swift in Sources */,
 				10307EB72431A04700EB5A9A /* AnnotationListViewData.swift in Sources */,
+				10307F252431E4E400EB5A9A /* NetworkService.swift in Sources */,
 				1081399F24317CB300DD594A /* AppDelegate.swift in Sources */,
 				10307EB52431A03700EB5A9A /* AnnotationListViewModel.swift in Sources */,
+				10307F212431E21800EB5A9A /* AnnotationDetailViewData.swift in Sources */,
+				10307F0F2431DAA300EB5A9A /* TableViewAdapter.swift in Sources */,
+				10307F1F2431E20800EB5A9A /* AnnotationDetailViewModel.swift in Sources */,
 				10307EB32431A01500EB5A9A /* AnnotationListViewController.swift in Sources */,
+				10307F1D2431E1DD00EB5A9A /* AnnotationDetailViewController.swift in Sources */,
+				10307F1A2431DDA100EB5A9A /* CreateAnnotationViewModel.swift in Sources */,
+				10307EB92431B08900EB5A9A /* ViewController+Ext.swift in Sources */,
+				10307F232431E34F00EB5A9A /* AnnotationService.swift in Sources */,
+				10307F2C2431FACE00EB5A9A /* Annotation.swift in Sources */,
 				108139A124317CB300DD594A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -473,10 +551,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		108139A424317CB300DD594A /* Main.storyboard */ = {
+		10307F3424326EA500EB5A9A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				108139A524317CB300DD594A /* Base */,
+				10307F3524326EA500EB5A9A /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -611,15 +689,18 @@
 			baseConfigurationReference = 2BCECA23F0AB48A5E5B26770 /* Pods-AnnotateAR.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = AnnotateAR/AnnotateAR.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = L33DPKL3UL;
 				INFOPLIST_FILE = AnnotateAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tylerfranklin.AnnotateAR;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tylerfranklin.AnnotateAR;
+				PRODUCT_NAME = "Annotate AR";
+				PROVISIONING_PROFILE_SPECIFIER = "Annotate AR T dev";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -630,15 +711,18 @@
 			baseConfigurationReference = FAA7E599B3440BF05F86B3FF /* Pods-AnnotateAR.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = AnnotateAR/AnnotateAR.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = L33DPKL3UL;
 				INFOPLIST_FILE = AnnotateAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tylerfranklin.AnnotateAR;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tylerfranklin.AnnotateAR;
+				PRODUCT_NAME = "Annotate AR";
+				PROVISIONING_PROFILE_SPECIFIER = "Annotate AR T dev";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -659,7 +743,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tylerfranklin.AnnotateARTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tylerfranklin.AnnotateARTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -682,7 +766,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tylerfranklin.AnnotateARTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tylerfranklin.AnnotateARTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -703,7 +787,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tylerfranklin.AnnotateARUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tylerfranklin.AnnotateARUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -724,7 +808,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tylerfranklin.AnnotateARUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tylerfranklin.AnnotateARUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
