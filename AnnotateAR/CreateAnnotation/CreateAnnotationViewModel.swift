@@ -46,4 +46,5 @@ class CreateAnnotationViewModel {
         let user = Auth.auth().currentUser
         return user?.displayName ?? ""
     }
+
 }

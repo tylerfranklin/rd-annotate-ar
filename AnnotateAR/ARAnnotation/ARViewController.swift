@@ -1,45 +1,19 @@
 //
-//  AnnotationDetailViewController.swift
+//  ARViewController.swift
 //  AnnotateAR
 //
-//  Created by Tyler Franklin on 3/30/20.
+//  Created by Skyler Brown on 7/16/20.
 //  Copyright © 2020 Tyler Franklin. All rights reserved.
 //
 
-import FirebaseAuth
-import FirebaseFirestore
-import UIKit
+import Foundation
 import ARKit
+import SceneKit
 
-class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    var viewModel: AnnotationDetailViewModel!
-    @IBOutlet var annotationIcon: UIImageView!
-    @IBOutlet var collectAnnotationButtonView: UIView!
-    @IBOutlet var collectorsTableView: UITableView!
-    @IBOutlet var authorLabel: UILabel!
-    @IBOutlet var bookLabel: UILabel!
-    @IBOutlet var dateLabel: UILabel!
-    @IBOutlet var pageLabel: UILabel!
-    @IBOutlet var bodyLabel: UITextView!
 
-    @IBOutlet var collectAnnotationLabel: UILabel!
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+class ARViewController: UIViewController, ARSCNViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    private let tableViewAdapter = TableViewAdapter<User>()
-
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        bindViewModel()
-        viewModel.ready()
-        assertViewModel()
- 
-    }
-    
-    func assertViewModel() {
-            assert(viewModel != nil)
-        }
-    
+ /*
     @IBOutlet var sceneView: ARSCNView!
     
     @IBOutlet weak var blurView: UIVisualEffectView!
@@ -61,67 +35,54 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
     var session: ARSession {
         return sceneView.session
     }
-
+    
+    // MARK: - View Controller Life Cycle
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.observeQuery()
+    
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        bindViewModel()
+        viewModel.ready()
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        viewModel.stopObserving()
-        session.pause()
-    }
+        sceneView.delegate = self
+        sceneView.session.delegate = self
 
-    deinit {
-        viewModel.stopObserving()
-    }
-
-   
-        private func bindViewModel() {
-        viewModel.didChangeData = { [weak self] data in
-            guard let strongSelf = self else { return }
-            if data.isUserACollector {
-                strongSelf.disableButton()
-            }
-
-            let annotation = data.annotation
-            // TODO: get the user from a user id
-            strongSelf.authorLabel.text = annotation.owner
-            strongSelf.bookLabel.text = annotation.book
-            strongSelf.bodyLabel.text = annotation.body
-            strongSelf.pageLabel.text = "(p\(annotation.page))"
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .short
-            dateFormatter.timeStyle = .short
-
-            strongSelf.dateLabel.text = dateFormatter.string(from: annotation.date.dateValue())
-            
-            strongSelf.tableViewAdapter.update(with: data.collectors)
-            strongSelf.collectorsTableView.reloadData()
-        }
-
-        collectorsTableView.dataSource = tableViewAdapter
-        collectorsTableView.delegate = tableViewAdapter
-        activityIndicator.isHidden = true
-
-        tableViewAdapter.cellFactory = { tableView, _, cellData in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else { return UITableViewCell() }
-            cell.textLabel?.text = cellData.userName
-            return cell
-        }
-
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(collectPressed))
-        collectAnnotationButtonView.addGestureRecognizer(gesture)
-
-        viewModel.collectAnnotationRequestCompleted = { [weak self] _ in
-            guard let strongSelf = self else { return }
-            strongSelf.activityIndicator.isHidden = true
-            strongSelf.collectAnnotationLabel.isHidden = false
+        // Hook up status view controller callback(s).
+        statusViewController.restartExperienceHandler = { [unowned self] in
+            self.restartExperience()
         }
     }
     
+    private func bindViewModel() {
+    viewModel.didChangeData = { [weak self] data in
+        guard let strongSelf = self else { return }
+    /*    if data.isUserACollector {
+            strongSelf.disableButton()
+        }
+*/
+        let annotation = data.annotation
+        // TODO: get the user from a user id
+        strongSelf.authorLabel.text = annotation.owner
+        strongSelf.bookLabel.text = annotation.book
+        strongSelf.bodyLabel.text = annotation.body
+        strongSelf.pageLabel.text = "(p\(annotation.page))"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+
+        strongSelf.dateLabel.text = dateFormatter.string(from: annotation.date.dateValue())
+        
+        strongSelf.tableViewAdapter.update(with: data.collectors)
+        strongSelf.collectorsTableView.reloadData()
+       
+        }
+    }
     @IBAction func getPicture(_ sender: UIButton) {
         
         let imagePickerController = UIImagePickerController()
@@ -175,6 +136,12 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
         } else{("error") }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        session.pause()
+    }
+
     // MARK: - Session management (Image detection setup)
     
     /// Prevents restarting the session while a restart is in progress.
@@ -257,15 +224,44 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
             */
         ])
     }
+        // MARK: - Tap gesture handler & ARSKViewDelegate
+        
+        // Labels for classified objects by ARAnchor UUID
+    
 
-    private func disableButton() {
-        collectAnnotationButtonView.backgroundColor = UIColor.gray
-        collectAnnotationButtonView.isUserInteractionEnabled = false
-    }
+        // When the user taps, add an anchor associated with the current classification result.
+        /// - Tag: PlaceLabelAtLocation
+    @IBAction func PlaceLabelAtLocation(_ sender: UITapGestureRecognizer) {
+        let hitLocationInView = sender.location(in: sceneView)
+                let hitTestResults = sceneView.hitTest(hitLocationInView, types: [.featurePoint, .estimatedHorizontalPlane])
+                if let result = hitTestResults.first {
+                    
+                    // Add a new anchor at the tap location.
+                    // S - result.worldTransform is the 4x4 sim coordinates of the object
+                    let anchor = ARAnchor(transform: result.worldTransform)
+                    sceneView.session.add(anchor: anchor)
+                    
+        // ---This is where object text is turned into anchor text---
+                    
+                    // Track anchor ID to associate text with the anchor after ARKit creates a corresponding SKNode.
+                    // S - Changed identifierString to translateText
+                    anchorLabels[anchor.identifier] = "enter notes here"
 
-    @objc func collectPressed(sender _: UITapGestureRecognizer) {
-        viewModel.collectAnnotation()
-        activityIndicator.isHidden = false
-        collectAnnotationLabel.isHidden = true
     }
+    */
+    
+/*
+        // When an anchor is added, provide a SpriteKit node for it and set its text to the classification label.
+        /// - Tag: UpdateARContent
+        func view(_ view: ARSKView, didAdd node: SKNode, for anchor: ARAnchor) {
+            guard let labelText = anchorLabels[anchor.identifier] else {
+                fatalError("missing expected associated label for anchor")
+            }
+            
+            let label = TemplateLabelNode(text: labelText)
+            // S - Makes position of anchor text label node slightly higher than the touch point
+            label.position = CGPoint(x: label.position.x, y: (label.position.y + 0.03))
+            node.addChild(label)
+
+        }*/
 }

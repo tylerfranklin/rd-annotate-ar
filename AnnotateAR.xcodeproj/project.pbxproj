@@ -34,6 +34,10 @@
 		10F0D439243274400091C6EF /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F0D438243274400091C6EF /* AuthenticationServices.framework */; };
 		10F0D43B243274990091C6EF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10F0D43A243274990091C6EF /* CloudKit.framework */; };
 		44B8475469384BE502A73EE9 /* Pods_AnnotateARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A497E561348991A3D024D2D6 /* Pods_AnnotateARUITests.framework */; };
+		E4011BA924C0A72C007F000D /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4011BA824C0A72C007F000D /* ARViewController.swift */; };
+		E4011BAB24C0A7C7007F000D /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4011BAA24C0A7C7007F000D /* StatusViewController.swift */; };
+		E4011BB024C0A90A007F000D /* ViewController+ARSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4011BAF24C0A90A007F000D /* ViewController+ARSessionDelegate.swift */; };
+		E43E073324C8D11100ED1C30 /* TemplateLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43E073224C8D11100ED1C30 /* TemplateLabelNode.swift */; };
 		F24CE5F4835A57726168033C /* Pods_AnnotateAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD0251FECD96D476E766D2E /* Pods_AnnotateAR.framework */; };
 		F6003B9A4A9167EC79E8594C /* Pods_AnnotateARTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7B32402241D37DB487D70FF /* Pods_AnnotateARTests.framework */; };
 /* End PBXBuildFile section */
@@ -96,6 +100,10 @@
 		8B72E31F84C65B65D2AA8642 /* Pods-AnnotateARUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARUITests.debug.xcconfig"; path = "Target Support Files/Pods-AnnotateARUITests/Pods-AnnotateARUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A497E561348991A3D024D2D6 /* Pods_AnnotateARUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnnotateARUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7B32402241D37DB487D70FF /* Pods_AnnotateARTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnnotateARTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4011BA824C0A72C007F000D /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
+		E4011BAA24C0A7C7007F000D /* StatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
+		E4011BAF24C0A90A007F000D /* ViewController+ARSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+ARSessionDelegate.swift"; sourceTree = "<group>"; };
+		E43E073224C8D11100ED1C30 /* TemplateLabelNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateLabelNode.swift; sourceTree = "<group>"; };
 		F7A9406627F374A315F8AA53 /* Pods-AnnotateARUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARUITests.release.xcconfig"; path = "Target Support Files/Pods-AnnotateARUITests/Pods-AnnotateARUITests.release.xcconfig"; sourceTree = "<group>"; };
 		FAA7E599B3440BF05F86B3FF /* Pods-AnnotateAR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateAR.release.xcconfig"; path = "Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -154,8 +162,8 @@
 			isa = PBXGroup;
 			children = (
 				10307F1C2431E1DD00EB5A9A /* AnnotationDetailViewController.swift */,
-				10307F1E2431E20800EB5A9A /* AnnotationDetailViewModel.swift */,
 				10307F202431E21800EB5A9A /* AnnotationDetailViewData.swift */,
+				10307F1E2431E20800EB5A9A /* AnnotationDetailViewModel.swift */,
 			);
 			path = AnnotationDetail;
 			sourceTree = "<group>";
@@ -196,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				10307F2F243204EA00EB5A9A /* AnnotateAR.entitlements */,
+				E4011BAE24C0A893007F000D /* ARAnnotation */,
 				10307F2A2431F95900EB5A9A /* Common */,
 				10307F122431DCEF00EB5A9A /* CreateAnnotation */,
 				10307F1B2431E1A400EB5A9A /* AnnotationDetail */,
@@ -256,6 +265,17 @@
 				A497E561348991A3D024D2D6 /* Pods_AnnotateARUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4011BAE24C0A893007F000D /* ARAnnotation */ = {
+			isa = PBXGroup;
+			children = (
+				E43E073224C8D11100ED1C30 /* TemplateLabelNode.swift */,
+				E4011BA824C0A72C007F000D /* ARViewController.swift */,
+				E4011BAF24C0A90A007F000D /* ViewController+ARSessionDelegate.swift */,
+				E4011BAA24C0A7C7007F000D /* StatusViewController.swift */,
+			);
+			path = ARAnnotation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -501,7 +521,9 @@
 				10307F182431DD7300EB5A9A /* CreateAnnotationViewController.swift in Sources */,
 				10307F112431DB0500EB5A9A /* AnnotationTableViewCell.swift in Sources */,
 				108139A924317CB300DD594A /* AnnotateAR.xcdatamodeld in Sources */,
+				E4011BB024C0A90A007F000D /* ViewController+ARSessionDelegate.swift in Sources */,
 				108139A324317CB300DD594A /* LoginViewController.swift in Sources */,
+				E4011BAB24C0A7C7007F000D /* StatusViewController.swift in Sources */,
 				10307EB72431A04700EB5A9A /* AnnotationListViewData.swift in Sources */,
 				10307F252431E4E400EB5A9A /* NetworkService.swift in Sources */,
 				1081399F24317CB300DD594A /* AppDelegate.swift in Sources */,
@@ -512,7 +534,9 @@
 				10307EB32431A01500EB5A9A /* AnnotationListViewController.swift in Sources */,
 				10307F1D2431E1DD00EB5A9A /* AnnotationDetailViewController.swift in Sources */,
 				10307F1A2431DDA100EB5A9A /* CreateAnnotationViewModel.swift in Sources */,
+				E4011BA924C0A72C007F000D /* ARViewController.swift in Sources */,
 				10307EB92431B08900EB5A9A /* ViewController+Ext.swift in Sources */,
+				E43E073324C8D11100ED1C30 /* TemplateLabelNode.swift in Sources */,
 				10307F232431E34F00EB5A9A /* AnnotationService.swift in Sources */,
 				10307F2C2431FACE00EB5A9A /* Annotation.swift in Sources */,
 				108139A124317CB300DD594A /* SceneDelegate.swift in Sources */,

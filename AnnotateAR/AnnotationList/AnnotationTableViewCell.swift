@@ -15,7 +15,8 @@ class AnnotationTableViewCell: UITableViewCell {
     @IBOutlet var bookLabel: UILabel!
     @IBOutlet var pageLabel: UILabel!
     @IBOutlet var bodyText: UITextView!
-
+    @IBOutlet weak var viewAnnotation: UIButton!
+    
     func populate(annotation: Annotation) {
         authorLabel.text = annotation.owner
         bookLabel.text = annotation.book
@@ -28,4 +29,21 @@ class AnnotationTableViewCell: UITableViewCell {
 
         dateLabel.text = dateFormatter.string(from: annotation.date.dateValue())
     }
+    
+    func getBodyText(annotation: Annotation)
+    {
+        
+    }
+    /* func prepare(for segue: UIStoryboardSegue, sender: UIButton) {
+        if segue.identifier == "viewSegue"
+        {
+            
+            if let controller = segue.destination as? ARViewController
+            {
+                controller.bookText = bodyText
+            }
+        }
+    
+    }
+*/
 }

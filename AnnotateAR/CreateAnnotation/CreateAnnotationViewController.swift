@@ -51,4 +51,5 @@ class CreateAnnotationViewController: ViewController<CreateAnnotationViewModel> 
             date: Timestamp(date: datePicker.date)
         )
     }
+    
 }
