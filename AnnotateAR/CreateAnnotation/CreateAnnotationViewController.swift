@@ -31,11 +31,6 @@ class CreateAnnotationViewController: ViewController<CreateAnnotationViewModel> 
             strongSelf.dismiss(animated: true, completion: nil)
         }
     }
-    
-    // Touch anywhere on screen to dismiss keyboard
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
 
     @IBAction func addPressed(sender: UIButton) {
 //        createAnnotationButton.isHidden = true
@@ -51,5 +46,4 @@ class CreateAnnotationViewController: ViewController<CreateAnnotationViewModel> 
             date: Timestamp(date: datePicker.date)
         )
     }
-    
 }
