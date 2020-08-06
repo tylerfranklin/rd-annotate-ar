@@ -27,7 +27,7 @@
         <!--Login-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController interfaceStyle="dark" id="BYZ-38-t0r" customClass="LoginViewController" customModule="Annotate_AR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="login" interfaceStyle="dark" id="BYZ-38-t0r" customClass="LoginViewController" customModule="Annotate_AR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -219,7 +219,7 @@
         <scene sceneID="LYD-QO-miB">
             <objects>
                 <viewController storyboardIdentifier="AnnotationDetailViewController" interfaceStyle="dark" id="aeT-5V-FGY" customClass="AnnotationDetailViewController" customModule="Annotate_AR" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="X32-2V-2rs">
+                    <view key="view" contentMode="scaleToFill" id="X32-2V-2rs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -240,7 +240,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kqg-3g-6yV">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqg-3g-6yV">
                                 <rect key="frame" x="0.0" y="808" width="414" height="54"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Collect Annotation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GlO-9y-NtX">
