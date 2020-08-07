@@ -16,8 +16,9 @@ enum Keys: String {
 class LoginViewController: UIViewController, FUIAuthDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if Auth.auth().currentUser != nil {
+        navigationItem.hidesBackButton = true
+        let CurrentUser = Auth.auth().currentUser
+        if CurrentUser != nil {
             showList()
         } else {
             let authUI = FUIAuth.defaultAuthUI()
