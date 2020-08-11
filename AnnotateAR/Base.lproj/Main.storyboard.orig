@@ -55,6 +55,27 @@
             </objects>
             <point key="canvasLocation" x="284" y="68.815592203898049"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="uDo-Lt-4R3">
+            <objects>
+                <viewController id="ySi-eg-6LF" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="s70-vy-IHi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arskView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="71q-uR-k3h">
+                                <rect key="frame" x="20" y="44" width="339" height="603"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </arskView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="ecI-qn-lyh"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kRy-hb-a4a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1240.8" y="69.715142428785612"/>
+        </scene>
         <!--Annotation List View Controller-->
         <scene sceneID="zAo-w2-8Xq">
             <objects>
@@ -101,8 +122,8 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" text="Lorem" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NYP-E0-3Nx">
-                                                    <rect key="frame" x="113" y="62" width="215" height="24"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Lorem" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NYP-E0-3Nx">
+                                                    <rect key="frame" x="113" y="61.5" width="227" height="77.5"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" weight="thin" pointSize="12"/>
@@ -186,12 +207,16 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="UP5-zY-YWr" id="DOY-vu-91i"/>
+<<<<<<< Updated upstream
+                        <segue destination="aeT-5V-FGY" kind="show" identifier="showDetail" id="X89-Zu-q9U"/>
+=======
                         <segue destination="76h-nK-RiQ" kind="show" identifier="viewSegue" id="4IS-IF-Pje"/>
+>>>>>>> Stashed changes
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="usy-la-hd0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1221.5999999999999" y="68.815592203898049"/>
+            <point key="canvasLocation" x="2053.5999999999999" y="69.715142428785612"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="LYD-QO-miB">
@@ -297,7 +322,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MNd-T1-0IS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1969" y="798"/>
+            <point key="canvasLocation" x="2879.1999999999998" y="68.815592203898049"/>
         </scene>
         <!--Create Annotation View Controller-->
         <scene sceneID="BG9-lu-1gH">
@@ -373,6 +398,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ufk-ux-g2Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+<<<<<<< Updated upstream
+            <point key="canvasLocation" x="2054" y="763"/>
+=======
             <point key="canvasLocation" x="1222" y="799"/>
         </scene>
         <!--Status View Controller-->
@@ -529,11 +557,10 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yGz-Vs-Po7" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2220" y="68.815592203898049"/>
+>>>>>>> Stashed changes
         </scene>
     </scenes>
     <resources>
-        <image name="restart" width="20" height="20"/>
-        <image name="restartPressed" width="20" height="20"/>
         <image name="scanTargetIcon" width="512" height="512"/>
         <image name="userPlaceholderIcon" width="128" height="128"/>
     </resources>

@@ -9,6 +9,18 @@
 import FirebaseAuth
 import FirebaseFirestore
 import UIKit
+<<<<<<< Updated upstream
+
+class AnnotationDetailViewController: ViewController<AnnotationDetailViewModel> {
+    @IBOutlet var annotationIcon: UIImageView!
+    @IBOutlet var collectAnnotationButtonView: UIView!
+    @IBOutlet var collectorsTableView: UITableView!
+    @IBOutlet var authorLabel: UILabel!
+    @IBOutlet var bookLabel: UILabel!
+    @IBOutlet var dateLabel: UILabel!
+    @IBOutlet var pageLabel: UILabel!
+    @IBOutlet var bodyLabel: UITextView!
+=======
 import ARKit
 import SceneKit
 
@@ -23,19 +35,30 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
     var dateLabel: String!
     var pageLabel: String!
     var bodyLabel: String!
+>>>>>>> Stashed changes
 
     @IBOutlet weak var takePictureButton: UIBarButtonItem!
     @IBOutlet var collectAnnotationLabel: UILabel!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
+<<<<<<< Updated upstream
+    private let tableViewAdapter = TableViewAdapter<User>()
+
+    override func viewDidLoad() {
+=======
    // private let tableViewAdapter = TableViewAdapter<User>()
     
     public override func viewDidLoad() {
         
+>>>>>>> Stashed changes
         super.viewDidLoad()
         //self.view.backgroundColor = UIColor(patternImage: UIImage(named: "scanTargetIcon")!)
         bindViewModel()
         viewModel.ready()
+<<<<<<< Updated upstream
+    }
+    
+=======
         sceneView.delegate = self
         sceneView.session.delegate = self
 
@@ -67,6 +90,7 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
     var session: ARSession {
         return sceneView.session
     }
+>>>>>>> Stashed changes
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -76,14 +100,17 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.stopObserving()
-        session.pause()
     }
 
     deinit {
         viewModel.stopObserving()
     }
 
+<<<<<<< Updated upstream
+    private func bindViewModel() {
+=======
         private func bindViewModel() {
+>>>>>>> Stashed changes
         viewModel.didChangeData = { [weak self] data in
             guard let strongSelf = self else { return }
             
@@ -135,6 +162,8 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
         }
 
     }
+<<<<<<< Updated upstream
+=======
     
     // Open up the camera when you click "take picture"
     @IBAction func getPicture(_ sender: UIBarButtonItem) {
@@ -294,6 +323,7 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
             
         ])
     }
+>>>>>>> Stashed changes
 
     private func disableButton() {
         collectAnnotationButtonView.backgroundColor = UIColor.gray
