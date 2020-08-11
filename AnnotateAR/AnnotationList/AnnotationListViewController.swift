@@ -9,6 +9,7 @@
 import FirebaseFirestore
 import SnapKit
 import UIKit
+import FirebaseUI
 
 class AnnotationListViewController: ViewController<AnnotationListViewModel> {
     @IBOutlet var tableView: UITableView!
@@ -20,7 +21,10 @@ class AnnotationListViewController: ViewController<AnnotationListViewModel> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // self.navigationController?.isNavigationBarHidden = true
+        
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(Logout))
+      
         viewModel.didChangeData = { [weak self] data in
             guard let strongSelf = self else { return }
             strongSelf.tableViewAdapter.update(with: data.annotations)
@@ -80,4 +84,24 @@ class AnnotationListViewController: ViewController<AnnotationListViewModel> {
     deinit {
         viewModel.stopObserving()
     }
+    
+    @objc func Logout(){
+        let login_vc = storyboard?.instantiateViewController(identifier: "login") as! LoginViewController
+        let alertController = UIAlertController(title: "warning", message: "Log out of current account?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
+        let confirmAction = UIAlertAction(title: "confirm", style: .default, handler: {
+            action in
+            do{
+                try Auth.auth().signOut()
+            }catch let signOutError as NSError{
+                print("Error sign out: \(signOutError)")
+            }
+           
+            self.navigationController?.pushViewController(login_vc, animated: true)
+        })
+        alertController.addAction(cancelAction)
+        alertController.addAction(confirmAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
 }
