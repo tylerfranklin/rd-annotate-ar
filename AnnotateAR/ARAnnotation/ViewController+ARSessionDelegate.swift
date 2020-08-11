@@ -1,12 +1,10 @@
-//
-//  ViewController+ARSessionDelegate.swift
-//  AnnotateAR
-//
-//  Created by Skyler Brown on 7/16/20.
-//  Copyright © 2020 Tyler Franklin. All rights reserved.
-//
+/*
+See LICENSE folder for this sample’s licensing information.
 
-import Foundation
+Abstract:
+Session status management for `ViewController`.
+*/
+
 import ARKit
 
 extension AnnotationDetailViewController: ARSessionDelegate {

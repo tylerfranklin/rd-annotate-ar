@@ -74,11 +74,14 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+<<<<<<< Updated upstream
+=======
 	<key>NSCameraUsageDescription</key>
 	<string>AnnotateAR would like to access your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>The location is used for augmenting reality</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+>>>>>>> Stashed changes
 </dict>
 </plist>

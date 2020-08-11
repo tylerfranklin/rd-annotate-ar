@@ -22,16 +22,15 @@ class AnnotationListViewController: ViewController<AnnotationListViewModel> {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(Logout))
-        
+      
         viewModel.didChangeData = { [weak self] data in
             guard let strongSelf = self else { return }
             strongSelf.tableViewAdapter.update(with: data.annotations)
             strongSelf.tableView.reloadData()
         }
-
+        
         tableView.dataSource = tableViewAdapter
         tableView.delegate = tableViewAdapter
         tableView.estimatedRowHeight = 200
@@ -52,13 +51,13 @@ class AnnotationListViewController: ViewController<AnnotationListViewModel> {
     }
 
     func detailPressed() {
-        performSegue(withIdentifier: "showDetail", sender: self)
+        performSegue(withIdentifier: "viewSegue", sender: self)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if segue.identifier == "showDetail" {
+        if segue.identifier == "viewSegue" {
             let detailViewModel = AnnotationDetailViewModel(viewData: AnnotationDetailViewData(annotation: selectedAnnotation!, annotationReference: selectedAnnotationReference!, collectors: [], isUserACollector: false))
             let vc = segue.destination as? AnnotationDetailViewController
             vc?.viewModel = detailViewModel
