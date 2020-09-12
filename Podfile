@@ -22,6 +22,11 @@ target 'AnnotateAR' do
   pod 'CodableFirebase'
   pod 'GoogleDataTransport'
 
+  #Pods for Tesseract and Algolia search
+  pod 'TesseractOCRiOS'
+  pod 'GPUImage'
+  pod 'AlgoliaSearchClient', '~> 8.0'
+
   target 'AnnotateARTests' do
     inherit! :search_paths
     # Pods for testing

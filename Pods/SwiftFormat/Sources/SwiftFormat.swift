@@ -32,13 +32,17 @@
 import Foundation
 
 /// The current SwiftFormat version
-public let version = "0.44.6"
+let swiftFormatVersion = "0.46.2"
+public let version = swiftFormatVersion
 
 /// The standard SwiftFormat config file name
 public let swiftFormatConfigurationFile = ".swiftformat"
 
 /// The standard Swift version file name
 public let swiftVersionFile = ".swift-version"
+
+/// Supported Swift versions
+public let swiftVersions = ["3.x", "4.0", "4.1", "4.2", "5.0", "5.1", "5.2", "5.3"]
 
 /// An enumeration of the types of error that may be thrown by SwiftFormat
 public enum FormatError: Error, CustomStringConvertible, LocalizedError, CustomNSError {
@@ -73,7 +77,10 @@ public typealias FileEnumerationHandler = (
     _ options: Options
 ) throws -> () throws -> Void
 
-/// Enumerate all swift files at the specified location and (optionally) calculate an output file URL for each.
+/// Callback for info-level logging
+public typealias Logger = (String) -> Void
+
+/// Enumerate all Swift files at the specified location and (optionally) calculate an output file URL for each.
 /// Ignores the file if any of the excluded file URLs is a prefix of the input file URL.
 ///
 /// Files are enumerated concurrently. For convenience, the enumeration block returns a completion block, which
@@ -86,55 +93,16 @@ public func enumerateFiles(withInputURL inputURL: URL,
                            outputURL: URL? = nil,
                            options baseOptions: Options = .default,
                            concurrent: Bool = true,
+                           logger: Logger? = nil,
                            skipped: FileEnumerationHandler? = nil,
-                           handler: @escaping FileEnumerationHandler) -> [Error] {
+                           handler: @escaping FileEnumerationHandler) -> [Error]
+{
     let manager = FileManager.default
     let keys: [URLResourceKey] = [
         .isRegularFileKey, .isDirectoryKey,
         .isAliasFileKey, .isSymbolicLinkKey,
         .creationDateKey, .pathKey,
     ]
-
-    struct ResourceValues {
-        let isRegularFile: Bool?
-        let isDirectory: Bool?
-        let isAliasFile: Bool?
-        let isSymbolicLink: Bool?
-        let creationDate: Date?
-        let path: String?
-    }
-
-    func getResourceValues(for url: URL) throws -> ResourceValues {
-        #if os(macOS)
-            if let resourceValues = try? url.resourceValues(forKeys: Set(keys)) {
-                return ResourceValues(
-                    isRegularFile: resourceValues.isRegularFile,
-                    isDirectory: resourceValues.isDirectory,
-                    isAliasFile: resourceValues.isAliasFile,
-                    isSymbolicLink: resourceValues.isSymbolicLink,
-                    creationDate: resourceValues.creationDate,
-                    path: resourceValues.path
-                )
-            }
-            if manager.fileExists(atPath: url.path) {
-                throw FormatError.reading("Failed to read attributes for \(url.path)")
-            }
-            throw FormatError.options("File not found at \(url.path)")
-        #else
-            var isDirectory: ObjCBool = false
-            if manager.fileExists(atPath: url.path, isDirectory: &isDirectory) {
-                return ResourceValues(
-                    isRegularFile: !isDirectory.boolValue,
-                    isDirectory: isDirectory.boolValue,
-                    isAliasFile: false,
-                    isSymbolicLink: false,
-                    creationDate: nil,
-                    path: url.path
-                )
-            }
-            throw FormatError.options("File not found at \(url.path)")
-        #endif
-    }
 
     let group = DispatchGroup()
     var completionBlocks = [() throws -> Void]()
@@ -151,12 +119,12 @@ public func enumerateFiles(withInputURL inputURL: URL,
         let fileOptions = options.fileOptions ?? .default
         let inputURL = inputURL.standardizedFileURL
         do {
-            let resourceValues = try getResourceValues(for: inputURL)
+            let resourceValues = try getResourceValues(for: inputURL, keys: keys)
             if resourceValues.isAliasFile == true {
                 #if os(macOS)
                     if fileOptions.followSymlinks {
                         let resolvedURL = try URL(resolvingAliasFileAt: inputURL)
-                        return (resolvedURL, try getResourceValues(for: resolvedURL), baseOptions)
+                        return (resolvedURL, try getResourceValues(for: resolvedURL, keys: keys), options)
                     } else if let handler = skipped {
                         onComplete(try handler(inputURL, inputURL, options))
                         return nil
@@ -165,7 +133,7 @@ public func enumerateFiles(withInputURL inputURL: URL,
             } else if resourceValues.isSymbolicLink == true {
                 if fileOptions.followSymlinks {
                     let resolvedURL = inputURL.resolvingSymlinksInPath()
-                    return (resolvedURL, try getResourceValues(for: resolvedURL), baseOptions)
+                    return (resolvedURL, try getResourceValues(for: resolvedURL, keys: keys), options)
                 } else if let handler = skipped {
                     onComplete(try handler(inputURL, inputURL, options))
                     return nil
@@ -180,9 +148,10 @@ public func enumerateFiles(withInputURL inputURL: URL,
 
     let fileOptions = baseOptions.fileOptions ?? .default
     do {
-        let resourceValues = try getResourceValues(for: inputURL.standardizedFileURL)
+        let resourceValues = try getResourceValues(for: inputURL.standardizedFileURL, keys: keys)
         if !fileOptions.followSymlinks,
-            resourceValues.isAliasFile == true || resourceValues.isSymbolicLink == true {
+            resourceValues.isAliasFile == true || resourceValues.isSymbolicLink == true
+        {
             return [FormatError.options("Symbolic link or alias was skipped: \(inputURL.path)")]
         }
     } catch {
@@ -192,70 +161,38 @@ public func enumerateFiles(withInputURL inputURL: URL,
         return []
     }
     if resourceValues.isDirectory == false,
-        !fileOptions.supportedFileExtensions.contains(inputURL.pathExtension) {
+        !fileOptions.supportedFileExtensions.contains(inputURL.pathExtension)
+    {
         return [FormatError.options("Unsupported file type: \(inputURL.path)")]
     }
 
-    func shouldSkipFile(_ inputURL: URL, with options: Options) -> Bool {
-        guard let excludedGlobs = options.fileOptions?.excludedGlobs else {
+    func wasSkipped(_ inputURL: URL, with options: Options) -> Bool {
+        guard shouldSkipFile(inputURL, with: options) else {
             return false
         }
-        let path = inputURL.path
-        for excluded in excludedGlobs {
-            guard excluded.matches(path) else {
-                continue
+        if let handler = skipped {
+            do {
+                onComplete(try handler(inputURL, inputURL, options))
+            } catch {
+                onComplete { throw error }
             }
-            if let unexcluded = options.fileOptions?.unexcludedGlobs,
-                unexcluded.contains(where: { $0.matches(path) }) {
-                return false
-            }
-            if let handler = skipped {
-                do {
-                    onComplete(try handler(inputURL, inputURL, options))
-                } catch {
-                    onComplete { throw error }
-                }
-            }
-            return true
         }
-        return false
-    }
-
-    func processDirectory(_ inputURL: URL, with options: inout Options) throws {
-        if options.formatOptions == nil {
-            options.formatOptions = .default
-        }
-        options.formatOptions?.fileInfo = FileInfo(
-            filePath: resourceValues.path,
-            creationDate: resourceValues.creationDate
-        )
-        let configFile = inputURL.appendingPathComponent(swiftFormatConfigurationFile)
-        if manager.fileExists(atPath: configFile.path) {
-            let data = try Data(contentsOf: configFile)
-            let args = try parseConfigFile(data)
-            try options.addArguments(args, in: inputURL.path)
-        }
-        let versionFile = inputURL.appendingPathComponent(swiftVersionFile)
-        if manager.fileExists(atPath: versionFile.path) {
-            let versionString = try String(contentsOf: versionFile, encoding: .utf8)
-            guard let version = Version(rawValue: versionString) else {
-                throw FormatError.options("Malformed \(swiftVersionFile) file at \(versionFile.path)")
-            }
-            assert(options.formatOptions != nil)
-            options.formatOptions?.swiftVersion = version
-        }
+        return true
     }
 
     func enumerate(inputURL: URL,
                    outputURL: URL?,
-                   options: Options) {
+                   options: Options)
+    {
+        assert(options.formatOptions != nil)
         guard let (inputURL, resourceValues, options) = resolveInputURL(inputURL, options: options) else {
             return
         }
+        assert(options.formatOptions != nil)
         let fileOptions = options.fileOptions ?? .default
         if resourceValues.isRegularFile == true {
             if fileOptions.supportedFileExtensions.contains(inputURL.pathExtension) {
-                if shouldSkipFile(inputURL, with: options) {
+                if wasSkipped(inputURL, with: options) {
                     return
                 }
                 let fileInfo = FileInfo(
@@ -271,15 +208,15 @@ public func enumerateFiles(withInputURL inputURL: URL,
                 }
             }
         } else if resourceValues.isDirectory == true {
-            if shouldSkipFile(inputURL, with: options) {
+            if wasSkipped(inputURL, with: options) {
                 return
             }
             var options = options
             do {
-                try processDirectory(inputURL, with: &options)
+                try processDirectory(inputURL, with: &options, logger: logger)
             } catch {
+                // Non-fatal error - no need to return
                 onComplete { throw error }
-                return
             }
             let enumerationOptions: FileManager.DirectoryEnumerationOptions
             #if os(macOS)
@@ -310,18 +247,18 @@ public func enumerateFiles(withInputURL inputURL: URL,
             return
         }
         var options = baseOptions
-        var directory = URL(fileURLWithPath: inputURL.pathComponents[0])
-        for part in inputURL.pathComponents.dropFirst().dropLast() {
-            directory.appendPathComponent(part)
-            if shouldSkipFile(directory, with: options) {
-                return
-            }
-            do {
-                try processDirectory(directory, with: &options)
-            } catch {
-                onComplete { throw error }
-                return
-            }
+        if options.formatOptions == nil {
+            options.formatOptions = .default
+        }
+        options.formatOptions?.fileInfo = FileInfo(
+            filePath: resourceValues.path,
+            creationDate: resourceValues.creationDate
+        )
+        do {
+            try gatherOptions(&options, for: inputURL, with: logger)
+        } catch {
+            // Non-fatal error - no need to return
+            onComplete { throw error }
         }
         enumerate(inputURL: inputURL, outputURL: outputURL, options: options)
     }
@@ -336,6 +273,60 @@ public func enumerateFiles(withInputURL inputURL: URL,
         }
     }
     return errors
+}
+
+// Process configuration in all directories in specified path.
+func gatherOptions(_ options: inout Options, for inputURL: URL, with logger: Logger?) throws {
+    var directory = URL(fileURLWithPath: inputURL.pathComponents[0])
+    for part in inputURL.pathComponents.dropFirst().dropLast() {
+        directory.appendPathComponent(part)
+        if shouldSkipFile(directory, with: options) {
+            return
+        }
+        try processDirectory(directory, with: &options, logger: logger)
+    }
+}
+
+// Determine if file should be skipped
+private func shouldSkipFile(_ inputURL: URL, with options: Options) -> Bool {
+    guard let excludedGlobs = options.fileOptions?.excludedGlobs else {
+        return false
+    }
+    let path = inputURL.path
+    for excluded in excludedGlobs {
+        guard excluded.matches(path) else {
+            continue
+        }
+        if let unexcluded = options.fileOptions?.unexcludedGlobs,
+            unexcluded.contains(where: { $0.matches(path) })
+        {
+            return false
+        }
+        return true
+    }
+    return false
+}
+
+// Process configuration files in specified directory.
+private func processDirectory(_ inputURL: URL, with options: inout Options, logger: Logger?) throws {
+    let manager = FileManager.default
+    let configFile = inputURL.appendingPathComponent(swiftFormatConfigurationFile)
+    if manager.fileExists(atPath: configFile.path) {
+        let data = try Data(contentsOf: configFile)
+        let args = try parseConfigFile(data)
+        try options.addArguments(args, in: inputURL.path)
+        logger?("Reading config file at \(configFile.path)")
+    }
+    let versionFile = inputURL.appendingPathComponent(swiftVersionFile)
+    if manager.fileExists(atPath: versionFile.path) {
+        let versionString = try String(contentsOf: versionFile, encoding: .utf8)
+        guard let version = Version(rawValue: versionString) else {
+            throw FormatError.options("Unrecognized swift version string '\(versionString)' "
+                + "found in file \(versionFile.path)")
+        }
+        assert(options.formatOptions != nil)
+        options.formatOptions?.swiftVersion = version
+    }
 }
 
 /// Line and column offset in source
@@ -368,7 +359,7 @@ public func offsetForToken(at index: Int, in tokens: [Token], tabWidth: Int) -> 
 }
 
 /// Get token index for offset
-public func tokenIndexForOffset(_ offset: SourceOffset, in tokens: [Token], tabWidth: Int) -> Int {
+public func tokenIndex(for offset: SourceOffset, in tokens: [Token], tabWidth: Int) -> Int {
     var tokenIndex = 0, line = 1
     for index in tokens.indices {
         guard case let .linebreak(_, originalLine) = tokens[index] else {
@@ -380,7 +371,7 @@ public func tokenIndexForOffset(_ offset: SourceOffset, in tokens: [Token], tabW
         }
         tokenIndex = index + 1
     }
-    if line < offset.line {
+    if line < offset.line - 1 {
         return tokens.endIndex
     }
     var column = 1
@@ -389,6 +380,21 @@ public func tokenIndexForOffset(_ offset: SourceOffset, in tokens: [Token], tabW
         tokenIndex += 1
     }
     return tokenIndex
+}
+
+/// Deprecated
+@available(*, deprecated, message: "Use tokenIndex(for:) instead")
+public func tokenIndexForOffset(_ offset: SourceOffset, in tokens: [Token], tabWidth: Int) -> Int {
+    return tokenIndex(for: offset, in: tokens, tabWidth: tabWidth)
+}
+
+/// Get token index range for line range
+public func tokenRange(forLineRange lineRange: ClosedRange<Int>, in tokens: [Token]) -> Range<Int> {
+    let startOffset = SourceOffset(line: lineRange.lowerBound, column: 0)
+    let endOffset = SourceOffset(line: lineRange.upperBound + 1, column: 0)
+    // NOTE: tab width is not relevant for line-based offsets
+    return tokenIndex(for: startOffset, in: tokens, tabWidth: 1)
+        ..< tokenIndex(for: endOffset, in: tokens, tabWidth: 1)
 }
 
 /// Get new offset for an original offset (before formatting)
@@ -418,52 +424,35 @@ public func newOffset(for offset: SourceOffset, in tokens: [Token], tabWidth: In
 
 /// Process parsing errors
 public func parsingError(for tokens: [Token], options: FormatOptions) -> FormatError? {
-    if let index = tokens.index(where: {
+    guard let index = tokens.index(where: {
         guard options.fragment || !$0.isError else { return true }
         guard !options.ignoreConflictMarkers, case let .operator(string, _) = $0 else { return false }
         return string.hasPrefix("<<<<<") || string.hasPrefix("=====") || string.hasPrefix(">>>>>")
-    }) {
-        let message: String
-        switch tokens[index] {
-        case .error(""):
-            message = "Unexpected end of file"
-        case let .error(string):
-            if string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                message = "Inconsistent whitespace in multi-line string literal"
-            } else {
-                message = "Unexpected token \(string)"
-            }
-        case let .operator(string, _):
-            message = "Found conflict marker \(string)"
-        default:
-            preconditionFailure()
-        }
-        let offset = offsetForToken(at: index, in: tokens, tabWidth: options.tabWidth)
-        return .parsing("\(message) at \(offset)")
+    }) else {
+        return nil
     }
-    return nil
+    let message: String
+    switch tokens[index] {
+    case .error(""):
+        message = "Unexpected end of file"
+    case let .error(string):
+        if string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            message = "Inconsistent whitespace in multi-line string literal"
+        } else {
+            message = "Unexpected token \(string)"
+        }
+    case let .operator(string, _):
+        message = "Found conflict marker \(string)"
+    default:
+        preconditionFailure()
+    }
+    let offset = offsetForToken(at: index, in: tokens, tabWidth: options.tabWidth)
+    return .parsing("\(message) at \(offset)")
 }
 
 /// Convert a token array back into a string
-public func sourceCode(for tokens: [Token]) -> String {
-    var output = ""
-    for token in tokens { output += token.string }
-    return output
-}
-
-/// Apply specified rules to a token array with optional callback
-/// Useful for perfoming additional logic after each rule is applied
-@available(*, deprecated, message: "Use other applyRules() method, or format() or lint() instead")
-public func applyRules(_ rules: [FormatRule],
-                       to originalTokens: [Token],
-                       with options: FormatOptions,
-                       callback: ((Int, [Token]) -> Void)?) throws -> [Token] {
-    return try applyRules(rules,
-                          to: originalTokens,
-                          with: options,
-                          trackChanges: false,
-                          range: nil,
-                          callback: callback).tokens
+public func sourceCode(for tokens: [Token]?) -> String {
+    return (tokens ?? []).map { $0.string }.joined()
 }
 
 /// Apply specified rules to a token array and optionally capture list of changes
@@ -471,7 +460,8 @@ public func applyRules(_ rules: [FormatRule],
                        to originalTokens: [Token],
                        with options: FormatOptions,
                        trackChanges: Bool,
-                       range: Range<Int>?) throws -> (tokens: [Token], changes: [Formatter.Change]) {
+                       range: Range<Int>?) throws -> (tokens: [Token], changes: [Formatter.Change])
+{
     return try applyRules(rules,
                           to: originalTokens,
                           with: options,
@@ -490,7 +480,13 @@ private func applyRules(
     callback: ((Int, [Token]) -> Void)? = nil
 ) throws -> (tokens: [Token], changes: [Formatter.Change]) {
     precondition(maxIterations > 1)
+    var rules = rules
     var tokens = originalTokens
+
+    // Ensure rule names have been set
+    if rules.first?.name == "" {
+        _ = FormatRules.all
+    }
 
     // Check for parsing errors
     if let error = parsingError(for: tokens, options: options) {
@@ -499,15 +495,36 @@ private func applyRules(
 
     // Infer shared options
     var options = options
-    let sharedOptions = FormatRules.sharedOptionsForRules(rules).compactMap {
-        FormatOptions.Descriptor.byName[$0]?.propertyName
-    }
+    let sharedOptions = FormatRules
+        .sharedOptionsForRules(rules)
+        .compactMap { Descriptors.byName[$0] }
+        .filter { $0.defaultArgument == $0.fromOptions(options) }
+        .map { $0.propertyName }
+
     inferFormatOptions(sharedOptions, from: tokens, into: &options)
+
+    // Check if required FileInfo is available
+    if rules.contains(FormatRules.fileHeader) {
+        if options.fileHeader.rawValue.contains("{created"),
+            options.fileInfo.creationDate == nil
+        {
+            throw FormatError.options(
+                "Failed to apply {created} template in file header as file info is unavailable"
+            )
+        }
+        if options.fileHeader.rawValue.contains("{file"),
+            options.fileInfo.fileName == nil
+        {
+            throw FormatError.options(
+                "Failed to apply {file} template in file header as file name was not provided"
+            )
+        }
+    }
 
     // Recursively apply rules until no changes are detected
     let group = DispatchGroup()
     let queue = DispatchQueue(label: "swiftformat.formatting", qos: .userInteractive)
-    let timeout = 1 + TimeInterval(tokens.count) / 1000
+    let timeout = 1 + TimeInterval(tokens.count) / 100
     var changes = [Formatter.Change]()
     for _ in 0 ..< maxIterations {
         let formatter = Formatter(tokens, options: options,
@@ -520,6 +537,9 @@ private func applyRules(
                 throw FormatError.writing("\(rule.name) rule timed out")
             }
             callback?(i, formatter.tokens)
+        }
+        if let error = formatter.errors.first, !options.fragment {
+            throw error
         }
         changes += formatter.changes
         if tokens == formatter.tokens {
@@ -541,35 +561,47 @@ private func applyRules(
             })
         }
         tokens = formatter.tokens
-        options.fileHeader = .ignore // Prevents infinite recursion
+        rules.removeAll(where: { $0.runOnceOnly }) // Prevents infinite recursion
     }
     throw FormatError.writing("Failed to terminate")
 }
 
 /// Format a pre-parsed token array
 /// Returns the formatted token array
-public func format(_ tokens: [Token], rules: [FormatRule] = FormatRules.default,
-                   options: FormatOptions = .default, range: Range<Int>? = nil) throws -> [Token] {
+public func format(
+    _ tokens: [Token], rules: [FormatRule] = FormatRules.default,
+    options: FormatOptions = .default, range: Range<Int>? = nil
+) throws -> [Token] {
     return try applyRules(rules, to: tokens, with: options, trackChanges: false, range: range).tokens
 }
 
 /// Format code with specified rules and options
-public func format(_ source: String, rules: [FormatRule] = FormatRules.default,
-                   options: FormatOptions = .default) throws -> String {
-    return sourceCode(for: try format(tokenize(source), rules: rules, options: options))
+public func format(
+    _ source: String, rules: [FormatRule] = FormatRules.default,
+    options: FormatOptions = .default, lineRange: ClosedRange<Int>? = nil
+) throws -> String {
+    let tokens = tokenize(source)
+    let range = lineRange.map { tokenRange(forLineRange: $0, in: tokens) }
+    return sourceCode(for: try format(tokens, rules: rules, options: options, range: range))
 }
 
 /// Lint a pre-parsed token array
 /// Returns the list of edits made
-public func lint(_ tokens: [Token], rules: [FormatRule] = FormatRules.default,
-                 options: FormatOptions = .default) throws -> [Formatter.Change] {
-    return try applyRules(rules, to: tokens, with: options, trackChanges: true, range: nil).changes
+public func lint(
+    _ tokens: [Token], rules: [FormatRule] = FormatRules.default,
+    options: FormatOptions = .default, range: Range<Int>? = nil
+) throws -> [Formatter.Change] {
+    return try applyRules(rules, to: tokens, with: options, trackChanges: true, range: range).changes
 }
 
 /// Lint code with specified rules and options
-public func lint(_ source: String, rules: [FormatRule] = FormatRules.default,
-                 options: FormatOptions = .default) throws -> [Formatter.Change] {
-    return try lint(tokenize(source), rules: rules, options: options)
+public func lint(
+    _ source: String, rules: [FormatRule] = FormatRules.default,
+    options: FormatOptions = .default, lineRange: ClosedRange<Int>? = nil
+) throws -> [Formatter.Change] {
+    let tokens = tokenize(source)
+    let range = lineRange.map { tokenRange(forLineRange: $0, in: tokens) }
+    return try lint(tokens, rules: rules, options: options, range: range)
 }
 
 // MARK: Path utilities
@@ -582,6 +614,47 @@ public func expandPath(_ path: String, in directory: String) -> URL {
         return URL(fileURLWithPath: NSString(string: path).expandingTildeInPath)
     }
     return URL(fileURLWithPath: directory).appendingPathComponent(path)
+}
+
+struct ResourceValues {
+    let isRegularFile: Bool?
+    let isDirectory: Bool?
+    let isAliasFile: Bool?
+    let isSymbolicLink: Bool?
+    let creationDate: Date?
+    let path: String?
+}
+
+func getResourceValues(for url: URL, keys: [URLResourceKey]) throws -> ResourceValues {
+    let manager = FileManager.default
+    #if os(macOS)
+        if let resourceValues = try? url.resourceValues(forKeys: Set(keys)) {
+            return ResourceValues(
+                isRegularFile: resourceValues.isRegularFile,
+                isDirectory: resourceValues.isDirectory,
+                isAliasFile: resourceValues.isAliasFile,
+                isSymbolicLink: resourceValues.isSymbolicLink,
+                creationDate: resourceValues.creationDate,
+                path: resourceValues.path
+            )
+        }
+        if manager.fileExists(atPath: url.path) {
+            throw FormatError.reading("Failed to read attributes for \(url.path)")
+        }
+    #else
+        var isDirectory: ObjCBool = false
+        if manager.fileExists(atPath: url.path, isDirectory: &isDirectory) {
+            return ResourceValues(
+                isRegularFile: !isDirectory.boolValue,
+                isDirectory: isDirectory.boolValue,
+                isAliasFile: false,
+                isSymbolicLink: false,
+                creationDate: nil,
+                path: url.path
+            )
+        }
+    #endif
+    throw FormatError.options("File not found at \(url.path)")
 }
 
 // MARK: Documentation utilities

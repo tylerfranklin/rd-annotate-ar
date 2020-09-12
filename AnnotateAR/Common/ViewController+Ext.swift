@@ -13,7 +13,12 @@ public class ViewController<T>: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+        if self is CreateAnnotationViewController
+        { }
+        else
+        {
         assertViewModel()
+        }
     }
 }
 
