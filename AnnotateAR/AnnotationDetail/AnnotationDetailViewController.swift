@@ -251,7 +251,13 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
             text.font = UIFont(name: "Helvetica", size: 10)
             
             // Make a container for the text so it can wrap
+            if self.bodyLabel.count > 100{
+            text.containerFrame = CGRect(origin:.zero, size: CGSize(width: 300, height: 150))
+            }
+            else
+            {
             text.containerFrame = CGRect(origin:.zero, size: CGSize(width: 200, height: 100))
+            }
             text.isWrapped = true
             
             // Create textNode for notes
@@ -268,7 +274,7 @@ class AnnotationDetailViewController: UIViewController, ARSCNViewDelegate, UIIma
             
             // Increase text's distance from planeNode based on string size
             if self.bodyLabel.count > 100
-            { textNode.position.x = textNode.position.x - 0.14}
+            { textNode.position.x = textNode.position.x - 0.20}
             else
             { textNode.position.x = textNode.position.x - 0.07 }
 

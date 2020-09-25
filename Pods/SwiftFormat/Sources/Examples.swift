@@ -361,6 +361,15 @@ private struct Examples {
     `--enable isEmpty` option.
     """
 
+    let initCoderUnavailable = """
+    ```diff
+    + @available(*, unavailable)
+      required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+      }
+    ```
+    """
+
     let numberFormatting = """
     ```diff
     - let color = 0xFF77A5
@@ -370,18 +379,6 @@ private struct Examples {
     ```diff
     - let big = 123456.123
     + let big = 123_456.123
-    ```
-    """
-
-    let ranges = """
-    ```diff
-    - for i in 0..<5 {}
-    + for i in 0 ..< 5 {}
-    ```
-
-    ```diff
-    - if (0...5).contains(i) {}
-    + if (0 ... 5).contains(i) {}
     ```
     """
 
@@ -778,15 +775,22 @@ private struct Examples {
     ```
     """
 
-    let specifiers = """
+    let redundantType = """
+    ```diff
+    - let view: UIView = UIView()
+    + let view = UIView()
+    ```
+    """
+
+    let modifierOrder = """
     ```diff
     - lazy public weak private(set) var foo: UIView?
     + public private(set) lazy weak var foo: UIView?
     ```
 
     ```diff
-    - override public final func foo()
-    + public final override func foo()
+    - final public override func foo()
+    + override public final func foo()
     ```
 
     ```diff
@@ -802,7 +806,7 @@ private struct Examples {
     ```
 
     **NOTE:** assignment to un-escaped `self` is only supported in Swift 4.2 and
-    above, so the `strongifiedSelf` rule is disabled unless the swift version is
+    above, so the `strongifiedSelf` rule is disabled unless the Swift version is
     set to 4.2 or above.
     """
 
@@ -905,6 +909,34 @@ private struct Examples {
     ```
     """
 
+    let wrapEnumCases = """
+    ```diff
+      enum Foo {
+    -   case bar, baz
+      }
+
+      enum Foo {
+    +   case bar
+    +   case baz
+      }
+    ```
+    """
+
+    let wrapSwitchCases = """
+    ```diff
+      switch foo {
+    -   case .bar, .baz:
+          break
+      }
+
+      switch foo {
+    +   case .foo,
+    +        .bar:
+          break
+      }
+    ```
+    """
+
     let void = """
     ```diff
     - let foo: () -> ()
@@ -925,11 +957,17 @@ private struct Examples {
     - func quux() -> (Void)
     + func quux() -> Void
     ```
+
+    ```diff
+    - callback = { _ in Void() }
+    + callback = { _ in () }
+    ```
     """
 
     let wrapArguments = """
     **NOTE:** For backwards compatibility with previous versions, if no value is
     provided for `--wrapparameters`, the value for `--wraparguments` will be used.
+
     `--wraparguments before-first`
 
     ```diff
@@ -955,15 +993,15 @@ private struct Examples {
     `--wrapparameters after-first`
 
     ```diff
-    - func foo(bar: Int,
-    -          baz: String) {
+    - func foo(
+    -   bar: Int,
+    -   baz: String
+    - ) {
         ...
       }
 
-    + func foo(
-    +   bar: Int,
-    +   baz: String
-    + ) {
+    + func foo(bar: Int,
+    +          baz: String) {
         ...
       }
     ```
@@ -983,6 +1021,62 @@ private struct Examples {
     ```
     """
 
+    let wrapMultilineStatementBraces = """
+    ```diff
+      if foo,
+    -   bar {
+        // ...
+      }
+
+      if foo,
+    +   bar
+    + {
+        // ...
+      }
+    ```
+
+    ```diff
+      guard foo,
+    -   bar else {
+        // ...
+      }
+
+      guard foo,
+    +   bar else
+    + {
+        // ...
+      }
+    ```
+
+    ```diff
+      func foo(
+        bar: Int,
+    -   baz: Int) {
+        // ...
+      }
+
+      func foo(
+        bar: Int,
+    +   baz: Int)
+    + {
+        // ...
+      }
+    ```
+
+    ```diff
+      class Foo: NSObject,
+    -   BarProtocol {
+        // ...
+      }
+
+      class Foo: NSObject,
+    +   BarProtocol
+    + {
+        // ...
+      }
+    ```
+    """
+
     let leadingDelimiters = """
     ```diff
     - guard let foo = maybeFoo // first
@@ -990,6 +1084,97 @@ private struct Examples {
 
     + guard let foo = maybeFoo, // first
     +      let bar = maybeBar else { ... }
+    ```
+    """
+
+    let wrapAttributes = """
+    `--funcattributes prev-line`
+
+    ```diff
+    - @objc func foo() {}
+
+    + @objc
+    + func foo() { }
+    ```
+
+    `--funcattributes same-line`
+
+    ```diff
+    - @objc
+    - func foo() { }
+
+    + @objc func foo() {}
+    ```
+
+    `--typeattributes prev-line`
+
+    ```diff
+    - @objc class Foo {}
+
+    + @objc
+    + class Foo { }
+    ```
+
+    `--typeattributes same-line`
+
+    ```diff
+    - @objc
+    - enum Foo { }
+
+    + @objc enum Foo {}
+    ```
+    """
+
+    let preferKeyPath = """
+    ```diff
+    - let barArray = fooArray.map { $0.bar }
+
+    + let barArray = fooArray.map(\\.bar)
+    ```
+    """
+
+    let organizeDeclarations = """
+    ```diff
+      public class Foo {
+    -     public func c() -> String {}
+    -
+    -     public let a: Int = 1
+    -     private let g: Int = 2
+    -     let e: Int = 2
+    -     public let b: Int = 3
+    -
+    -     public func d() {}
+    -     func f() {}
+    -     init() {}
+    -     deinit() {}
+     }
+
+      public class Foo {
+    +
+    +     // MARK: Lifecycle
+    +
+    +     init() {}
+    +     deinit() {}
+    +
+    +     // MARK: Public
+    +
+    +     public let a: Int = 1
+    +     public let b: Int = 3
+    +
+    +     public func c() -> String {}
+    +     public func d() {}
+    +
+    +     // MARK: Internal
+    +
+    +     let e: Int = 2
+    +
+    +     func f() {}
+    +
+    +     // MARK: Private
+    +
+    +     private let g: Int = 2
+    +
+     }
     ```
     """
 }

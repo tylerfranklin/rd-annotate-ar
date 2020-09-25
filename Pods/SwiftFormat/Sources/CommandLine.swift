@@ -32,9 +32,11 @@
 import Foundation
 
 /// Public interface for the SwiftFormat command-line functions
-public struct CLI {
+public enum CLI {}
+
+public extension CLI {
     /// Output type for printed content
-    public enum OutputType {
+    enum OutputType {
         case info
         case success
         case error
@@ -44,23 +46,23 @@ public struct CLI {
     }
 
     /// Output handler - override this to intercept output from the CLI
-    public static var print: (String, OutputType) -> Void = { _, _ in
+    static var print: (String, OutputType) -> Void = { _, _ in
         fatalError("No print hook set.")
     }
 
     /// Input handler - override this to inject input into the CLI
     /// Injected lines should include the terminating newline character
-    public static var readLine: () -> String? = {
+    static var readLine: () -> String? = {
         Swift.readLine(strippingNewline: false)
     }
 
     /// Run the CLI with the specified input arguments
-    public static func run(in directory: String, with args: [String] = CommandLine.arguments) -> ExitCode {
+    static func run(in directory: String, with args: [String] = CommandLine.arguments) -> ExitCode {
         return processArguments(args, in: directory)
     }
 
     /// Run the CLI with the specified input string (this will be parsed into multiple arguments)
-    public static func run(in directory: String, with argumentString: String) -> ExitCode {
+    static func run(in directory: String, with argumentString: String) -> ExitCode {
         return run(in: directory, with: parseArguments(argumentString))
     }
 }
@@ -72,10 +74,35 @@ private func print(_ message: String, as type: CLI.OutputType = .info) {
     }
 }
 
-private func printWarnings(_ errors: [Error]) {
+private func printWarnings(_ errors: [Error]) -> Bool {
+    var containsError = false
     for error in errors {
-        print("warning: \(error).", as: .warning)
+        var errorMessage = "\(error)"
+        if ![".", "?", "!"].contains(errorMessage.last ?? " ") {
+            errorMessage += "."
+        }
+        guard let error = error as? FormatError else {
+            continue
+        }
+        let isError: Bool
+        switch error {
+        case let .options(string):
+            isError = ["File not found", "Malformed", "--minversion"].contains(where: {
+                string.contains($0)
+            })
+        case let .writing(string):
+            isError = !string.contains(" cache ")
+        case .parsing, .reading:
+            isError = true
+        }
+        if isError {
+            containsError = true
+            print("error: \(errorMessage)", as: .error)
+        } else {
+            print("warning: \(errorMessage)", as: .warning)
+        }
     }
+    return containsError
 }
 
 // Represents the exit codes to the command line. See `man sysexits` for more information.
@@ -87,7 +114,7 @@ public enum ExitCode: Int32 {
 
 func printOptions(as type: CLI.OutputType) {
     print("")
-    print(FormatOptions.Descriptor.formatting.compactMap {
+    print(Descriptors.formatting.compactMap {
         guard !$0.isDeprecated else { return nil }
         var result = "--\($0.argumentName)"
         for _ in 0 ..< Options.maxArgumentNameLength + 3 - result.count {
@@ -109,10 +136,16 @@ func printRuleInfo(for name: String, as type: CLI.OutputType) throws {
     print(name, as: type)
     print("", as: type)
     print(stripMarkdown(rule.help), as: type)
+    if let message = rule.deprecationMessage {
+        print("", as: type)
+        print("Note: \(rule.name) rule is deprecated. \(message)")
+        print("")
+        return
+    }
     if !rule.options.isEmpty {
         print("\nOptions:\n", as: type)
         print(rule.options.compactMap {
-            guard let descriptor = FormatOptions.Descriptor.byName[$0], !descriptor.isDeprecated else {
+            guard let descriptor = Descriptors.byName[$0], !descriptor.isDeprecated else {
                 return nil
             }
             var result = "--\(descriptor.argumentName)"
@@ -151,15 +184,18 @@ func printHelp(as type: CLI.OutputType) {
     <file> <file> ...  Swift files or directories to be processed, or "stdin"
 
     --filelist         Path to a file with names of files to process, one per line
+    --stdinpath        Path to stdin source file (used for generating header)
     --config           Path to a configuration file containing rules and options
     --inferoptions     Instead of formatting input, use it to infer format options
     --output           Output path for formatted file(s) (defaults to input path)
     --exclude          Comma-delimited list of ignored paths (supports glob syntax)
     --unexclude        Paths to not exclude, even if excluded elsewhere in config
     --symlinks         How symlinks are handled: "follow" or "ignore" (default)
-    --fragment         \(stripMarkdown(FormatOptions.Descriptor.fragment.help))
-    --conflictmarkers  \(stripMarkdown(FormatOptions.Descriptor.ignoreConflictMarkers.help))
-    --swiftversion     \(stripMarkdown(FormatOptions.Descriptor.swiftVersion.help))
+    --linerange        Range of lines to process within the input file (first, last)
+    --fragment         \(stripMarkdown(Descriptors.fragment.help))
+    --conflictmarkers  \(stripMarkdown(Descriptors.ignoreConflictMarkers.help))
+    --swiftversion     \(stripMarkdown(Descriptors.swiftVersion.help))
+    --minversion       The minimum SwiftFormat version to be used for these files
     --cache            Path to cache file, or "clear" or "ignore" the default cache
     --dryrun           Run in "dry" mode (without actually changing any files)
     --lint             Like --dryrun, but returns an error if formatting is needed
@@ -332,7 +368,7 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
         }
 
         // Options
-        let options = try Options(args, in: directory)
+        var options = try Options(args, in: directory)
 
         // Show rules
         if showRules {
@@ -360,7 +396,6 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
         }
 
         // Input path(s)
-        var useStdin = false
         var inputURLs = [URL]()
         if let fileListPath = args["filelist"] {
             let fileListURL = try parsePath(fileListPath, for: "filelist", in: directory)
@@ -371,12 +406,37 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
                 throw FormatError.options("Failed to read file list at \(fileListPath)")
             }
         }
-        while !useStdin, let inputPath = args[String(inputURLs.count + 1)] {
+        var useStdin = false
+        while let inputPath = args[String(inputURLs.count + 1)] {
+            inputURLs += try parsePaths(inputPath, for: "input", in: directory)
             if inputPath.lowercased() == "stdin" {
                 useStdin = true
-            } else {
-                inputURLs += try parsePaths(inputPath, for: "input", in: directory)
             }
+        }
+        if useStdin {
+            if inputURLs.count > 1 {
+                if args["filelist"] != nil {
+                    throw FormatError.options("--filelist option cannot be combined with stdin input")
+                }
+                throw FormatError.options("Cannot combine stdin with other file inputs")
+            }
+            inputURLs = []
+        }
+        if let stdinPath = args["stdinpath"] {
+            if !useStdin {
+                print("warning: --stdinpath option only applies when using stdin", as: .warning)
+            }
+            let stdinURL = try parsePath(stdinPath, for: "stdinpath", in: directory)
+            let resourceValues = try getResourceValues(
+                for: stdinURL.standardizedFileURL,
+                keys: [.creationDateKey, .pathKey]
+            )
+            var formatOptions = options.formatOptions ?? .default
+            formatOptions.fileInfo = FileInfo(
+                filePath: resourceValues.path,
+                creationDate: resourceValues.creationDate
+            )
+            options.formatOptions = formatOptions
         }
 
         // Treat values for arguments that do not take a value as input paths
@@ -401,19 +461,45 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
         try addInputPaths(for: "inferoptions")
 
         // Output path
-        let outputURL = try args["output"].map { try parsePath($0, for: "--output", in: directory) }
-        if outputURL != nil {
-            if args["output"] == "" {
+        var useStdout = false
+        let outputURL = try args["output"].flatMap { arg -> URL? in
+            if arg == "" {
                 throw FormatError.options("--output argument expects a value")
             } else if inputURLs.count > 1 {
                 throw FormatError.options("--output argument is only valid for a single input file or directory")
+            } else if arg == "stdout" {
+                useStdout = true
+                return URL(string: arg)
             }
+            return try parsePath(arg, for: "--output", in: directory)
+        }
+
+        // Source range
+        let lineRange = try args["linerange"].flatMap { arg -> ClosedRange<Int>? in
+            if arg == "" {
+                throw FormatError.options("--linerange argument expects a value")
+            } else if inputURLs.count > 1 {
+                throw FormatError.options("--linerange argument is only valid for a single input file")
+            }
+            let parts = arg.components(separatedBy: ",").map {
+                $0.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            guard (1 ... 2).contains(parts.count),
+                let start = parts.first.flatMap(Int.init),
+                let end = parts.last.flatMap(Int.init)
+            else {
+                throw FormatError.options("Unsupported --linerange value '\(arg)'")
+            }
+            return start ... end
         }
 
         // Infer options
         if args["inferoptions"] != nil {
             guard args["config"] == nil else {
                 throw FormatError.options("--inferoptions option can't be used along with a config file")
+            }
+            guard args["range"] == nil else {
+                throw FormatError.options("--inferoptions option can't be applied to a line range")
             }
             if !inputURLs.isEmpty {
                 print("Inferring swiftformat options from source file(s)...", as: .info)
@@ -422,8 +508,7 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
                 let time = formatTime(timeEvent {
                     (filesParsed, formatOptions, errors) = inferOptions(from: inputURLs, options: fileOptions)
                 })
-                printWarnings(errors)
-                if filesParsed == 0 {
+                if printWarnings(errors) || filesParsed == 0 {
                     throw FormatError.parsing("Failed to to infer options")
                 }
                 var filesChecked = filesParsed
@@ -451,14 +536,16 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
         let defaultCacheFileName = "swiftformat.cache"
         let manager = FileManager.default
         func setDefaultCacheURL() {
-            var cacheDirectory: URL!
-            #if os(macOS)
-                if let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-                    cacheDirectory = URL(fileURLWithPath: cachePath)
-                }
-            #endif
-            cacheDirectory = (cacheDirectory ?? URL(fileURLWithPath: "/var/tmp/"))
-                .appendingPathComponent("com.charcoaldesign.swiftformat")
+            let cacheDirectory = { () -> URL in
+                #if os(macOS)
+                    if let cachePath = NSSearchPathForDirectoriesInDomains(
+                        .cachesDirectory, .userDomainMask, true
+                    ).first {
+                        return URL(fileURLWithPath: cachePath)
+                    }
+                #endif
+                return URL(fileURLWithPath: "/var/tmp/")
+            }().appendingPathComponent("com.charcoaldesign.swiftformat")
             do {
                 try manager.createDirectory(at: cacheDirectory, withIntermediateDirectories: true, attributes: nil)
                 cacheURL = cacheDirectory.appendingPathComponent(defaultCacheFileName)
@@ -520,15 +607,26 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
                 return
             }
             do {
+                var options = options
                 if args["inferoptions"] != nil {
                     let tokens = tokenize(input)
-                    var options = options
                     options.formatOptions = inferFormatOptions(from: tokens)
                     try serializeOptions(options, to: outputURL)
                 } else {
                     printRunningMessage()
-                    let output = try applyRules(input, options: options, verbose: verbose, lint: lint)
-                    if let outputURL = outputURL {
+                    if let stdinURL = options.formatOptions?.fileInfo.filePath.map(URL.init(fileURLWithPath:)) {
+                        do {
+                            try gatherOptions(&options, for: stdinURL, with: { print($0, as: .info) })
+                        } catch {
+                            if printWarnings([error]) {
+                                status = .finished(error)
+                                return
+                            }
+                        }
+                    }
+                    let output = try applyRules(input, options: options, lineRange: lineRange,
+                                                verbose: verbose, lint: lint)
+                    if let outputURL = outputURL, !useStdout {
                         if (try? String(contentsOf: outputURL)) != output, !dryrun {
                             do {
                                 try output.write(to: outputURL, atomically: true, encoding: .utf8)
@@ -591,6 +689,7 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
                                                   andWriteToOutput: outputURL,
                                                   options: options,
                                                   overrides: overrides,
+                                                  lineRange: lineRange,
                                                   verbose: verbose,
                                                   dryrun: dryrun,
                                                   lint: lint,
@@ -598,33 +697,23 @@ func processArguments(_ args: [String], in directory: String) -> ExitCode {
             errors += _errors
         })
 
-        if outputFlags.filesWritten == 0 {
-            if outputFlags.filesChecked == 0 {
-                if let error = errors.first {
-                    errors.removeAll()
-                    throw error
-                }
-                if outputFlags.filesSkipped == 0 {
-                    let inputPaths = inputURLs.map { $0.path }.joined(separator: ", ")
-                    throw FormatError.options("No eligible files found at \(inputPaths)")
-                }
-            } else if !dryrun, !errors.isEmpty {
-                throw FormatError.options("Failed to format any files")
-            }
+        if printWarnings(errors) {
+            return .error
         }
-        if verbose {
-            print("")
+        if outputFlags.filesChecked == 0, outputFlags.filesSkipped == 0 {
+            let inputPaths = inputURLs.map { $0.path }.joined(separator: ", ")
+            print("warning: No eligible files found at \(inputPaths).", as: .warning)
         }
-        printWarnings(errors)
         print("SwiftFormat completed in \(time).", as: .success)
         return printResult(dryrun, lint, lenient, outputFlags)
     } catch {
-        if !verbose {
-            // Warnings would be redundant at this point
-            printWarnings(errors)
-        }
+        _ = printWarnings(errors)
         // Fatal error
-        print("error: \(error).", as: .error)
+        var errorMessage = "\(error)"
+        if ![".", "?", "!"].contains(errorMessage.last ?? " ") {
+            errorMessage += "."
+        }
+        print("error: \(errorMessage)", as: .error)
         return .error
     }
 }
@@ -661,7 +750,11 @@ func inferOptions(from inputURLs: [URL], options: FileOptions) -> (Int, FormatOp
     var filesParsed = 0
     let baseOptions = Options(fileOptions: options)
     for inputURL in inputURLs {
-        errors += enumerateFiles(withInputURL: inputURL, options: baseOptions) { inputURL, _, _ in
+        errors += enumerateFiles(
+            withInputURL: inputURL,
+            options: baseOptions,
+            logger: { print($0, as: .info) }
+        ) { inputURL, _, _ in
             guard let input = try? String(contentsOf: inputURL) else {
                 throw FormatError.reading("Failed to read file \(inputURL.path)")
             }
@@ -685,31 +778,38 @@ func computeHash(_ source: String) -> String {
     return "\(count)\(hash)"
 }
 
-func applyRules(_ source: String, options: Options, verbose: Bool, lint: Bool) throws -> String {
+func applyRules(_ source: String, options: Options, lineRange: ClosedRange<Int>?,
+                verbose: Bool, lint: Bool) throws -> String
+{
     // Parse source
-    let originalTokens = tokenize(source)
-    var tokens = originalTokens
+    var tokens = tokenize(source)
 
     // Get rules
     let rulesByName = FormatRules.byName
     let ruleNames = Array(options.rules ?? allRules.subtracting(FormatRules.disabledByDefault)).sorted()
     let rules = ruleNames.compactMap { rulesByName[$0] }
 
+    if verbose, let path = options.formatOptions?.fileInfo.filePath {
+        print("\(lint ? "Linting" : "Formatting") \(path)", as: .info)
+    }
+
     // Apply rules
     let formatOptions = options.formatOptions ?? .default
     var changes = [Formatter.Change]()
+    let range = lineRange.map { tokenRange(forLineRange: $0, in: tokens) }
     (tokens, changes) = try applyRules(rules, to: tokens, with: formatOptions,
-                                       trackChanges: lint || verbose, range: nil)
+                                       trackChanges: lint || verbose, range: range)
 
     // Display info
-    if lint, tokens != originalTokens {
+    let updatedSource = sourceCode(for: tokens)
+    if lint, updatedSource != source {
         changes.forEach { print($0.description, as: .warning) }
     }
     if verbose {
         let rulesApplied = changes.reduce(into: Set<String>()) {
             $0.insert($1.rule.name)
         }
-        if rulesApplied.isEmpty || tokens == originalTokens {
+        if rulesApplied.isEmpty || updatedSource == source {
             print("-- no changes", as: .success)
         } else {
             let sortedNames = Array(rulesApplied).sorted().joined(separator: ", ")
@@ -718,22 +818,27 @@ func applyRules(_ source: String, options: Options, verbose: Bool, lint: Bool) t
     }
 
     // Output
-    return sourceCode(for: tokens)
+    return updatedSource
 }
 
 func processInput(_ inputURLs: [URL],
                   andWriteToOutput outputURL: URL?,
                   options: Options,
                   overrides: [String: String],
+                  lineRange: ClosedRange<Int>?,
                   verbose: Bool,
                   dryrun: Bool,
                   lint: Bool,
-                  cacheURL: URL?) -> (OutputFlags, [Error]) {
+                  cacheURL: URL?) -> (OutputFlags, [Error])
+{
     // Load cache
     let cacheDirectory = cacheURL?.deletingLastPathComponent().absoluteURL
     var cache: [String: String]?
     if let cacheURL = cacheURL {
-        cache = NSDictionary(contentsOf: cacheURL) as? [String: String] ?? [:]
+        if let data = try? Data(contentsOf: cacheURL) {
+            cache = try? JSONDecoder().decode([String: String].self, from: data)
+        }
+        cache = cache ?? [:]
     }
     // Logging skipped files
     var outputFlags: OutputFlags = (0, 0, 0, 0)
@@ -757,36 +862,35 @@ func processInput(_ inputURLs: [URL],
         }
         let formatOptions = options.formatOptions ?? .default
         if formatOptions.swiftVersion == .undefined {
-            print("warning: No swift version was specified, so some formatting features were disabled. Specify the version of swift you are using with the --swiftversion command line option, or by adding a \(swiftVersionFile) file to your project.", as: .warning)
+            print("warning: No Swift version was specified, so some formatting features were disabled. Specify the version of Swift you are using with the --swiftversion option, or by adding a \(swiftVersionFile) file to your project.", as: .warning)
         }
-        if formatOptions.useTabs, formatOptions.tabWidth <= 0 {
-            print("warning: The --indent option is set to tabs, but no --tabwidth was specified.", as: .warning)
+        if formatOptions.useTabs, formatOptions.tabWidth <= 0, !formatOptions.smartTabs {
+            print("warning: The --smarttabs option is disabled, but no --tabwidth was specified.", as: .warning)
         }
         showedConfigurationWarnings = true
     }
     // Format files
     var errors = [Error]()
     for inputURL in inputURLs {
-        errors += enumerateFiles(withInputURL: inputURL,
-                                 outputURL: outputURL,
-                                 options: options,
-                                 concurrent: !verbose,
-                                 skipped: skippedHandler) { inputURL, outputURL, options in
-
+        errors += enumerateFiles(
+            withInputURL: inputURL,
+            outputURL: outputURL,
+            options: options,
+            concurrent: !verbose,
+            logger: { print($0, as: .info) },
+            skipped: skippedHandler
+        ) { inputURL, outputURL, options in
             guard let input = try? String(contentsOf: inputURL) else {
                 throw FormatError.reading("Failed to read file \(inputURL.path)")
             }
             // Override options
             var options = options
             try options.addArguments(overrides, in: "") // No need for directory as overrides are formatOptions only
-            // Validate options
             let formatOptions = options.formatOptions ?? .default
-            if formatOptions.useTabs, formatOptions.tabWidth <= 0 {
-                throw FormatError.options("The --maxwidth option requires --tabwidth to also be set")
-            }
+            let range = lineRange.map { "\($0.lowerBound),\($0.upperBound);" } ?? ""
             // Check cache
             let rules = options.rules ?? allRules.subtracting(FormatRules.disabledByDefault)
-            let configHash = computeHash("\(formatOptions)\(rules.sorted().joined(separator: ","))")
+            let configHash = computeHash("\(formatOptions)\(range)\(rules.sorted().joined(separator: ","))")
             let cachePrefix = "\(version);\(configHash);"
             let cacheKey: String = {
                 var path = inputURL.absoluteURL.path
@@ -797,9 +901,6 @@ func processInput(_ inputURLs: [URL],
                 return path
             }()
             do {
-                if verbose {
-                    print("\(lint ? "Linting" : "Formatting") \(inputURL.path)", as: .info)
-                }
                 var cacheHash: String?
                 var sourceHash: String?
                 if let cacheEntry = cache?[cacheKey], cacheEntry.hasPrefix(cachePrefix) {
@@ -810,10 +911,12 @@ func processInput(_ inputURLs: [URL],
                 if let cacheHash = cacheHash, cacheHash == sourceHash {
                     output = input
                     if verbose {
+                        print("\(lint ? "Linting" : "Formatting") \(inputURL.path)", as: .info)
                         print("-- no changes (cached)", as: .success)
                     }
                 } else {
-                    output = try applyRules(input, options: options, verbose: verbose, lint: lint)
+                    output = try applyRules(input, options: options, lineRange: lineRange,
+                                            verbose: verbose, lint: lint)
                     if output != input {
                         sourceHash = nil
                     }
@@ -822,7 +925,18 @@ func processInput(_ inputURLs: [URL],
                     // Only bother computing this if cache is enabled
                     cachePrefix + (sourceHash ?? computeHash(output))
                 }
-                if outputURL != inputURL, (try? String(contentsOf: outputURL)) != output {
+                if outputURL.lastPathComponent.lowercased() == "stdout" {
+                    if !dryrun {
+                        // Write to stdout
+                        print(output, as: .raw)
+                        return {
+                            outputFlags.filesChecked += 1
+                            outputFlags.filesFailed += 1
+                            outputFlags.filesWritten += 1
+                            showConfigurationWarnings(options)
+                        }
+                    }
+                } else if outputURL != inputURL, (try? String(contentsOf: outputURL)) != output {
                     if !dryrun {
                         do {
                             try FileManager.default.createDirectory(at: outputURL.deletingLastPathComponent(),
@@ -897,15 +1011,18 @@ func processInput(_ inputURLs: [URL],
             errors.append(FormatError.writing("\(errorCount) file\(errorCount == 1 ? "" : "s") could not be formatted"))
         }
     }
-    if outputFlags.filesChecked > 0 {
-        // Save cache
-        if let cache = cache, let cacheURL = cacheURL, let cacheDirectory = cacheDirectory {
-            if !(cache as NSDictionary).write(to: cacheURL, atomically: true) {
-                if FileManager.default.fileExists(atPath: cacheDirectory.path) {
-                    errors.append(FormatError.writing("Failed to write cache file at \(cacheURL.path)"))
-                } else {
-                    errors.append(FormatError.reading("Specified cache file directory does not exist: \(cacheDirectory.path)"))
-                }
+    // Save cache
+    if outputFlags.filesChecked > 0, let cache = cache, let cacheURL = cacheURL,
+        let cacheDirectory = cacheDirectory
+    {
+        do {
+            let data = try JSONEncoder().encode(cache)
+            try data.write(to: cacheURL, options: .atomic)
+        } catch {
+            if FileManager.default.fileExists(atPath: cacheDirectory.path) {
+                errors.append(FormatError.writing("Failed to write cache file at \(cacheURL.path)"))
+            } else {
+                errors.append(FormatError.reading("Specified cache file directory does not exist: \(cacheDirectory.path)"))
             }
         }
     }
