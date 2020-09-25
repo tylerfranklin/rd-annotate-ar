@@ -36,6 +36,8 @@
 		44B8475469384BE502A73EE9 /* Pods_AnnotateARUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A497E561348991A3D024D2D6 /* Pods_AnnotateARUITests.framework */; };
 		E4011BAB24C0A7C7007F000D /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4011BAA24C0A7C7007F000D /* StatusViewController.swift */; };
 		E43863E624DE001B00FD77B7 /* ViewController+ARSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43863E524DE001B00FD77B7 /* ViewController+ARSessionDelegate.swift */; };
+		E44262B024F98BF800563E57 /* OCRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44262AF24F98BF700563E57 /* OCRViewController.swift */; };
+		E44262B224F991C400563E57 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = E44262B124F991C400563E57 /* tessdata */; };
 		F24CE5F4835A57726168033C /* Pods_AnnotateAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD0251FECD96D476E766D2E /* Pods_AnnotateAR.framework */; };
 		F6003B9A4A9167EC79E8594C /* Pods_AnnotateARTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7B32402241D37DB487D70FF /* Pods_AnnotateARTests.framework */; };
 /* End PBXBuildFile section */
@@ -100,6 +102,8 @@
 		B7B32402241D37DB487D70FF /* Pods_AnnotateARTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnnotateARTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4011BAA24C0A7C7007F000D /* StatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
 		E43863E524DE001B00FD77B7 /* ViewController+ARSessionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+ARSessionDelegate.swift"; sourceTree = "<group>"; };
+		E44262AF24F98BF700563E57 /* OCRViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCRViewController.swift; sourceTree = "<group>"; };
+		E44262B124F991C400563E57 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		F7A9406627F374A315F8AA53 /* Pods-AnnotateARUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateARUITests.release.xcconfig"; path = "Target Support Files/Pods-AnnotateARUITests/Pods-AnnotateARUITests.release.xcconfig"; sourceTree = "<group>"; };
 		FAA7E599B3440BF05F86B3FF /* Pods-AnnotateAR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnnotateAR.release.xcconfig"; path = "Target Support Files/Pods-AnnotateAR/Pods-AnnotateAR.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -216,6 +220,7 @@
 				10307F2B2431FACE00EB5A9A /* Annotation.swift */,
 				108139A024317CB300DD594A /* SceneDelegate.swift */,
 				10307F242431E4E400EB5A9A /* NetworkService.swift */,
+				E44262AE24F98BE400563E57 /* TesseractOCR */,
 			);
 			path = AnnotateAR;
 			sourceTree = "<group>";
@@ -272,6 +277,15 @@
 			path = ARAnnotation;
 			sourceTree = "<group>";
 		};
+		E44262AE24F98BE400563E57 /* TesseractOCR */ = {
+			isa = PBXGroup;
+			children = (
+				E44262B124F991C400563E57 /* tessdata */,
+				E44262AF24F98BF700563E57 /* OCRViewController.swift */,
+			);
+			path = TesseractOCR;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -291,6 +305,8 @@
 			dependencies = (
 			);
 			name = AnnotateAR;
+			packageProductDependencies = (
+			);
 			productName = AnnotateAR;
 			productReference = 1081399B24317CB300DD594A /* Annotate AR.app */;
 			productType = "com.apple.product-type.application";
@@ -365,6 +381,8 @@
 				Base,
 			);
 			mainGroup = 1081399224317CB300DD594A;
+			packageReferences = (
+			);
 			productRefGroup = 1081399C24317CB300DD594A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -383,6 +401,7 @@
 			files = (
 				108139AE24317CB300DD594A /* LaunchScreen.storyboard in Resources */,
 				10307F3624326EA500EB5A9A /* Main.storyboard in Resources */,
+				E44262B224F991C400563E57 /* tessdata in Resources */,
 				108139D224317D2700DD594A /* GoogleService-Info.plist in Resources */,
 				108139AB24317CB300DD594A /* Assets.xcassets in Resources */,
 			);
@@ -530,6 +549,7 @@
 				10307EB92431B08900EB5A9A /* ViewController+Ext.swift in Sources */,
 				10307F232431E34F00EB5A9A /* AnnotationService.swift in Sources */,
 				E43863E624DE001B00FD77B7 /* ViewController+ARSessionDelegate.swift in Sources */,
+				E44262B024F98BF800563E57 /* OCRViewController.swift in Sources */,
 				10307F2C2431FACE00EB5A9A /* Annotation.swift in Sources */,
 				108139A124317CB300DD594A /* SceneDelegate.swift in Sources */,
 			);
