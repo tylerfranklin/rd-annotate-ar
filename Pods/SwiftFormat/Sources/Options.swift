@@ -84,6 +84,20 @@ public enum ArgumentStrippingMode: String {
     case all = "always"
 }
 
+// Wrap mode for @ attributes
+public enum AttributeMode: String {
+    case prevLine = "prev-line"
+    case sameLine = "same-line"
+    case preserve
+}
+
+/// Argument type for else position
+public enum ElsePosition: String {
+    case sameLine = "same-line"
+    case nextLine = "next-line"
+    case auto
+}
+
 /// Version number wrapper
 public struct Version: RawRepresentable, Comparable, ExpressibleByStringLiteral, CustomStringConvertible {
     public let rawValue: String
@@ -96,9 +110,7 @@ public struct Version: RawRepresentable, Comparable, ExpressibleByStringLiteral,
 
     public init?(rawValue: String) {
         let rawValue = rawValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !rawValue.components(separatedBy: ".").contains(where: {
-            !CharacterSet.decimalDigits.contains($0.unicodeScalars.first ?? " ")
-        }) else {
+        guard CharacterSet.decimalDigits.contains(rawValue.unicodeScalars.first ?? " ") else {
             return nil
         }
         self.rawValue = rawValue
@@ -198,7 +210,8 @@ public enum Grouping: Equatable, RawRepresentable, CustomStringConvertible {
             }
             guard (1 ... 2).contains(parts.count),
                 let group = parts.first.flatMap(Int.init),
-                let threshold = parts.last.flatMap(Int.init) else {
+                let threshold = parts.last.flatMap(Int.init)
+            else {
                 return nil
             }
             self = (group == 0) ? .none : .group(group, threshold)
@@ -235,12 +248,25 @@ public enum SelfMode: String {
     case initOnly = "init-only"
 }
 
+/// Optionals mode
+public enum OptionalsMode: String {
+    case exceptProperties = "except-properties"
+    case always
+}
+
+/// Argument type for yoda conditions
+public enum YodaMode: String {
+    case literalsOnly = "literals-only"
+    case always
+}
+
 /// Configuration options for formatting. These aren't actually used by the
 /// Formatter class itself, but it makes them available to the format rules.
 public struct FormatOptions: CustomStringConvertible {
     public var indent: String
     public var linebreak: String
     public var allowInlineSemicolons: Bool
+    public var spaceAroundRangeOperators: Bool
     public var spaceAroundOperatorDeclarations: Bool
     public var useVoid: Bool
     public var indentCase: Bool
@@ -266,19 +292,33 @@ public struct FormatOptions: CustomStringConvertible {
     public var hoistPatternLet: Bool
     public var stripUnusedArguments: ArgumentStrippingMode
     public var elseOnNextLine: Bool
+    public var guardElsePosition: ElsePosition
     public var explicitSelf: SelfMode
-    public var selfRequired: [String]
+    public var selfRequired: Set<String>
     public var experimentalRules: Bool
     public var importGrouping: ImportGrouping
-    public var trailingClosures: [String]
+    public var trailingClosures: Set<String>
     public var xcodeIndentation: Bool
     public var tabWidth: Int
     public var maxWidth: Int
-    public var noSpaceOperators: [String]
+    public var smartTabs: Bool
+    public var noSpaceOperators: Set<String>
+    public var noWrapOperators: Set<String>
+    public var modifierOrder: [String]
+    public var shortOptionals: OptionalsMode
+    public var funcAttributes: AttributeMode
+    public var typeAttributes: AttributeMode
+    public var varAttributes: AttributeMode
+    public var categoryMarkComment: String
+    public var beforeMarks: Set<String>
+    public var lifecycleMethods: Set<String>
+    public var organizeClassThreshold: Int
+    public var organizeStructThreshold: Int
+    public var organizeEnumThreshold: Int
+    public var yodaSwap: YodaMode
 
     // Deprecated
     public var indentComments: Bool
-    public var spaceAroundRangeOperators: Bool
 
     // Doesn't really belong here, but hard to put elsewhere
     public var fragment: Bool
@@ -318,20 +358,36 @@ public struct FormatOptions: CustomStringConvertible {
                 hoistPatternLet: Bool = true,
                 stripUnusedArguments: ArgumentStrippingMode = .all,
                 elseOnNextLine: Bool = false,
+                guardElsePosition: ElsePosition = .auto,
                 explicitSelf: SelfMode = .remove,
-                selfRequired: [String] = [],
+                selfRequired: Set<String> = [],
                 experimentalRules: Bool = false,
                 importGrouping: ImportGrouping = .alphabetized,
-                trailingClosures: [String] = [],
+                trailingClosures: Set<String> = [],
                 xcodeIndentation: Bool = false,
                 tabWidth: Int = 0,
                 maxWidth: Int = 0,
-                noSpaceOperators: [String] = [],
+                smartTabs: Bool = true,
+                noSpaceOperators: Set<String> = [],
+                noWrapOperators: Set<String> = [],
+                modifierOrder: [String] = [],
+                shortOptionals: OptionalsMode = .always,
+                funcAttributes: AttributeMode = .preserve,
+                typeAttributes: AttributeMode = .preserve,
+                varAttributes: AttributeMode = .preserve,
+                categoryMarkComment: String = "MARK: %c",
+                beforeMarks: Set<String> = [],
+                lifecycleMethods: Set<String> = [],
+                organizeClassThreshold: Int = 0,
+                organizeStructThreshold: Int = 0,
+                organizeEnumThreshold: Int = 0,
+                yodaSwap: YodaMode = .always,
                 // Doesn't really belong here, but hard to put elsewhere
                 fragment: Bool = false,
                 ignoreConflictMarkers: Bool = false,
                 swiftVersion: Version = .undefined,
-                fileInfo: FileInfo = FileInfo()) {
+                fileInfo: FileInfo = FileInfo())
+    {
         self.indent = indent
         self.linebreak = linebreak
         self.allowInlineSemicolons = allowInlineSemicolons
@@ -348,7 +404,7 @@ public struct FormatOptions: CustomStringConvertible {
         self.fileHeader = fileHeader
         self.ifdefIndent = ifdefIndent
         self.wrapArguments = wrapArguments
-        self.wrapParameters = wrapParameters == .default ? wrapArguments : wrapParameters
+        self.wrapParameters = wrapParameters
         self.wrapCollections = wrapCollections
         self.closingParenOnSameLine = closingParenOnSameLine
         self.uppercaseHex = uppercaseHex
@@ -362,6 +418,7 @@ public struct FormatOptions: CustomStringConvertible {
         self.hoistPatternLet = hoistPatternLet
         self.stripUnusedArguments = stripUnusedArguments
         self.elseOnNextLine = elseOnNextLine
+        self.guardElsePosition = guardElsePosition
         self.explicitSelf = explicitSelf
         self.selfRequired = selfRequired
         self.experimentalRules = experimentalRules
@@ -370,7 +427,21 @@ public struct FormatOptions: CustomStringConvertible {
         self.xcodeIndentation = xcodeIndentation
         self.tabWidth = tabWidth
         self.maxWidth = maxWidth
+        self.smartTabs = smartTabs
         self.noSpaceOperators = noSpaceOperators
+        self.noWrapOperators = noWrapOperators
+        self.modifierOrder = modifierOrder
+        self.shortOptionals = shortOptionals
+        self.funcAttributes = funcAttributes
+        self.typeAttributes = typeAttributes
+        self.varAttributes = varAttributes
+        self.categoryMarkComment = categoryMarkComment
+        self.beforeMarks = beforeMarks
+        self.lifecycleMethods = lifecycleMethods
+        self.organizeClassThreshold = organizeClassThreshold
+        self.organizeStructThreshold = organizeStructThreshold
+        self.organizeEnumThreshold = organizeEnumThreshold
+        self.yodaSwap = yodaSwap
         // Doesn't really belong here, but hard to put elsewhere
         self.fragment = fragment
         self.ignoreConflictMarkers = ignoreConflictMarkers
@@ -403,17 +474,21 @@ public struct FileOptions {
     public var supportedFileExtensions: [String]
     public var excludedGlobs: [Glob]
     public var unexcludedGlobs: [Glob]
+    public var minVersion: Version
 
     public static let `default` = FileOptions()
 
     public init(followSymlinks: Bool = false,
                 supportedFileExtensions: [String] = ["swift"],
                 excludedGlobs: [Glob] = [],
-                unexcludedGlobs: [Glob] = []) {
+                unexcludedGlobs: [Glob] = [],
+                minVersion: Version = .undefined)
+    {
         self.followSymlinks = followSymlinks
         self.supportedFileExtensions = supportedFileExtensions
         self.excludedGlobs = excludedGlobs
         self.unexcludedGlobs = unexcludedGlobs
+        self.minVersion = minVersion
     }
 }
 
@@ -431,7 +506,8 @@ public struct Options {
 
     public init(fileOptions: FileOptions? = nil,
                 formatOptions: FormatOptions? = nil,
-                rules: Set<String>? = nil) {
+                rules: Set<String>? = nil)
+    {
         self.fileOptions = fileOptions
         self.formatOptions = formatOptions
         self.rules = rules
