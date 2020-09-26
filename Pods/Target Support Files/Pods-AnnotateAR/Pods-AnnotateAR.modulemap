@@ -1,6 +1,0 @@
-framework module Pods_AnnotateAR {
-  umbrella header "Pods-AnnotateAR-umbrella.h"
-
-  export *
-  module * { export * }
-}
