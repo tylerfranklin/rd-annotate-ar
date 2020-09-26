@@ -1,13 +1,9 @@
-# Annotate AR
+# AR Annotate
 
-Virtual annotation app for the classroom.
+Concept for virtual annotation app for the classroom, adapted from [Niamh Power](https://github.com/niamh-power)'s [Lunch Train](https://medium.com/@niamhpower/getting-started-with-firebase-on-ios-part-1-612af4bcabd6).
 
 ## Setup Develop Environment
 
 1) [Install and update Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
-2) Clone this repo ([in Xcode](xcode://clone?repo=https%3A%2F%2Fgithub.com%2Ftylerfranklin%2Fannotate-ar), [in GitHub Desktop](x-github-client://openRepo/https://github.com/tylerfranklin/annotate-ar))
-3) Open a terminal client (e.g. [iterm2](https://iterm2.com/downloads/stable/latest)) 
-4) Ensure CocoaPods is installed (e.g. `pods --version`, [installation instructions](https://guides.cocoapods.org/using/getting-started.html#installation))
-5) Navigate to repo root (e.g. `cd ~/projects/annotate-ar`)
-6) Install/verify pod deps (e.g. `pods install`)
-7) Open the xcworkspace (e.g. `open ./AnnotateAR.xcworkspace`)
+2) Clone this repo ([in Xcode](xcode://clone?repo=https%3A%2F%2Fgithub.com%2Ftyfranklin%2Frd-ar-annotate), [in GitHub Desktop](x-github-client://openRepo/https://github.com/tyfranklin/rd-ar-annotate))
+3) Open `rd-ar-annotate.xcworkspace`
