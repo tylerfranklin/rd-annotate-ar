@@ -6,7 +6,7 @@ import withFirebaseAuth from 'react-with-firebase-auth'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import firebaseConfig from './firebaseConfig';
-import { Button } from 'rsuite';
+import { IconButton } from 'rsuite';
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
@@ -67,7 +67,7 @@ class App extends Component {
         {
           user
             ? <button onClick={signOut}>Sign out</button>
-            : <Button appearance="primary" onClick={signInWithGoogle}>Sign in with Google</Button>
+            : <IconButton appearance="primary" onClick={signInWithGoogle}>Sign in with Google</IconButton>
         }
       </header>
     </div>
