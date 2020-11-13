@@ -19,10 +19,9 @@ const providers = {
 class App extends Component {
   render() {
     const { user, signOut, signInWithGoogle } = this.props;
-    const { expand } = this.state;
     return (
       <Container className='App'>
-        <AppSideBar {...{ expand }} />
+        <AppSideBar />
         <AppBody {...{ user, signOut, signInWithGoogle }} />
       </Container>
     );
