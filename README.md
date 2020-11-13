@@ -6,6 +6,14 @@ Virtual annotation app for the classroom.
 
  `yarn install`
 
+## Test on Android
+
+You can use [Chrome's DevTools](https://developers.google.com/web/tools/chrome-devtools/remote-debugging) with the device plugged in by USB.
+
+## Test on iOS
+
+Right now only works for Safari's due to an outstanding iOS WebKit bug. You can use [Safari's DevTools](https://www.browserstack.com/guide/how-to-debug-on-iphone) with the device plugged in.
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -32,6 +40,16 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `yarn deploy`
+
+Builds and deploys to staging server (currently [ar-notes.web.app](https://ar-notes.web.app)).
+
+### `firebase serve`
+
+You'll need the Firebase CLI package: `yarn install --global firebase` .
+
+This command runs whatever's currently in the `build/` directory along with local Firebase service emualators, which is handy for testing the Firebase functions like our fuzzy search. 
 
 ### `yarn eject`
 
