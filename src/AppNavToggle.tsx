@@ -1,7 +1,11 @@
 import React from 'react';
+import { WrappedComponentProps } from 'react-with-firebase-auth';
 import { Icon, Navbar, Nav, Dropdown } from 'rsuite';
 
-type NavToggleProps = { expand: boolean; onChange: () => void };
+interface NavToggleProps extends WrappedComponentProps {
+  expand: boolean;
+  onChange: () => void;
+}
 
 const iconStyles = {
   width: 56,
@@ -10,7 +14,7 @@ const iconStyles = {
   textAlign: 'center' as 'center',
 };
 
-const NavToggle = ({ expand, onChange }: NavToggleProps) => {
+const NavToggle = ({ expand, onChange, signOut }: NavToggleProps) => {
   return (
     <Navbar
       appearance='subtle'
@@ -28,7 +32,7 @@ const NavToggle = ({ expand, onChange }: NavToggleProps) => {
           >
             <Dropdown.Item>Help</Dropdown.Item>
             <Dropdown.Item>Settings</Dropdown.Item>
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={signOut}>Sign out</Dropdown.Item>
           </Dropdown>
         </Nav>
 

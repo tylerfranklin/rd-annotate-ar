@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import React, { Component } from 'react';
 import { Icon, Nav, Dropdown, Sidenav, Sidebar } from 'rsuite';
 import NavToggle from './AppNavToggle';
+import { WrappedComponentProps } from 'react-with-firebase-auth';
 
 const headerStyles = {
   padding: 18,
@@ -12,13 +13,11 @@ const headerStyles = {
   overflow: 'hidden',
 };
 
-type AppSideBarProps = {};
-
 export default class AppSideBar extends Component<
-  AppSideBarProps,
+  WrappedComponentProps,
   { expand: boolean }
 > {
-  constructor(props: AppSideBarProps) {
+  constructor(props: WrappedComponentProps) {
     super(props);
     this.state = {
       expand: false,
@@ -84,7 +83,11 @@ export default class AppSideBar extends Component<
             </Nav>
           </Sidenav.Body>
         </Sidenav>
-        <NavToggle expand={expand} onChange={this.handleToggle} />
+        <NavToggle
+          expand={expand}
+          onChange={this.handleToggle}
+          {...this.props}
+        />
       </Sidebar>
     );
   }

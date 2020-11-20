@@ -11,6 +11,7 @@
     "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.9",
     "firebase": "^8.0.2",
+    "npm-watch": "^0.7.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^3.11.0",
@@ -23,9 +24,19 @@
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build && cd functions; yarn build",
+    "watch": "npm-watch",
+    "serve": "firebase serve",
     "deploy": "yarn build && firebase deploy --only hosting:ar-notes",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "watch": {
+    "build": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,tsx"
+    }
   },
   "eslintConfig": {
     "extends": [
