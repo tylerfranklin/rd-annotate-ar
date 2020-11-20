@@ -10,6 +10,15 @@ import { Container } from 'rsuite';
 import AppSideBar from './AppSideBar';
 import AppBody from './AppBody';
 
+interface Annotation {
+  body: string;
+  book: string;
+  owner: string;
+  page: number;
+  target: string;
+  date: Date;
+}
+
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyCy10l3nMOQR7efvT7XpTUw8TLnuG5BmdA',
@@ -23,18 +32,18 @@ const firebaseConfig = {
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-/** See the signature above to find out the available providers */
 const firebaseAppAuth = firebaseApp.auth();
+
 const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
+
 class App extends Component<WrappedComponentProps> {
   render() {
     return (
       <Container className='App'>
         {this.props.user ? <AppSideBar {...this.props} /> : null}
-        <AppBody {...this.props} />
+        <AppBody {...this.props} app={firebaseApp} />
       </Container>
     );
   }
