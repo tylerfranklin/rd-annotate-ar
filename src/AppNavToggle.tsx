@@ -1,12 +1,16 @@
+import React from 'react';
 import { Icon, Navbar, Nav, Dropdown } from 'rsuite';
+
+type NavToggleProps = { expand: boolean; onChange: () => void };
 
 const iconStyles = {
   width: 56,
   height: 56,
   lineHeight: '56px',
-  textAlign: 'center',
+  textAlign: 'center' as 'center',
 };
-const NavToggle = ({ expand, onChange }) => {
+
+const NavToggle = ({ expand, onChange }: NavToggleProps) => {
   return (
     <Navbar
       appearance='subtle'

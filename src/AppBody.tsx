@@ -1,8 +1,9 @@
 import logo from './logo.svg';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { IconButton, Icon, Content, Panel } from 'rsuite';
+import { WrappedComponentProps } from 'react-with-firebase-auth';
 
-export default class AppBody extends Component {
+export default class AppBody extends Component<WrappedComponentProps> {
   render() {
     const { user, signOut, signInWithGoogle } = this.props;
     return (

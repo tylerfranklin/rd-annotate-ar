@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Icon, Nav, Dropdown, Sidenav, Sidebar } from 'rsuite';
 import NavToggle from './AppNavToggle';
 
@@ -9,11 +9,16 @@ const headerStyles = {
   height: 56,
   background: '#34c3ff',
   color: ' #fff',
-  whiteSpace: 'nowrap',
   overflow: 'hidden',
 };
-export default class AppSideBar extends Component {
-  constructor(props) {
+
+type AppSideBarProps = {};
+
+export default class AppSideBar extends Component<
+  AppSideBarProps,
+  { expand: boolean }
+> {
+  constructor(props: AppSideBarProps) {
     super(props);
     this.state = {
       expand: false,
