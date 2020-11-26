@@ -1,10 +1,10 @@
 import React from 'react';
-import { WrappedComponentProps } from 'react-with-firebase-auth';
 import { Icon, Navbar, Nav, Dropdown } from 'rsuite';
 
-interface NavToggleProps extends WrappedComponentProps {
+interface NavToggleProps {
   expand: boolean;
   onChange: () => void;
+  signOut: () => void;
 }
 
 const iconStyles = {

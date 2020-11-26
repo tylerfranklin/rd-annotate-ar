@@ -1,12 +1,13 @@
 import logo from './logo.svg';
 import React, { Component } from 'react';
 import { IconButton, Icon, Content, Panel } from 'rsuite';
-import { WrappedComponentProps } from 'react-with-firebase-auth';
 import firebase from 'firebase';
 import AppDashboard from './AppDashboard';
 
-export interface AppBodyProps extends WrappedComponentProps {
+export interface AppBodyProps {
   app: firebase.app.App;
+  signInWithGoogle: () => void;
+  user?: firebase.User | null | undefined;
 }
 
 export default class AppBody extends Component<AppBodyProps> {

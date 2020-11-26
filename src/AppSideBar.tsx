@@ -2,7 +2,6 @@ import logo from './logo.svg';
 import React, { Component } from 'react';
 import { Icon, Nav, Dropdown, Sidenav, Sidebar } from 'rsuite';
 import NavToggle from './AppNavToggle';
-import { WrappedComponentProps } from 'react-with-firebase-auth';
 
 const headerStyles = {
   padding: 18,
@@ -13,11 +12,15 @@ const headerStyles = {
   overflow: 'hidden',
 };
 
+export type AppSideBarProps = {
+  signOut: () => void;
+};
+
 export default class AppSideBar extends Component<
-  WrappedComponentProps,
+  AppSideBarProps,
   { expand: boolean }
 > {
-  constructor(props: WrappedComponentProps) {
+  constructor(props: AppSideBarProps) {
     super(props);
     this.state = {
       expand: false,

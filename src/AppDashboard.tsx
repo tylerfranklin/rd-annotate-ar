@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { IconButton, Icon, Content, Panel, Timeline } from 'rsuite';
-import { WrappedComponentProps } from 'react-with-firebase-auth';
+import { Icon, Panel, Timeline } from 'rsuite';
 import firebase from 'firebase';
 
-interface AppDashboardState {
-  notes: [];
-}
+// interface AppDashboardState {
+//   notes: [];
+// }
 
 export default class AppDashboard extends Component<{
   app: firebase.app.App;
 }> {
   componentDidMount() {
-    console.log(this.props);
+    if (!this.props.app.database) {
+      return;
+    }
     this.props.app
       .database()
       .ref('annotations')
