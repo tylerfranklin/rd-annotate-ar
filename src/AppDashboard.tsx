@@ -96,7 +96,7 @@ export default class AppDashboard extends Component<
 
   render() {
     return (
-      <Panel style={{ overflow: 'auto' }}>
+      <Panel>
         <Timeline className='custom-timeline'>
           {this.state.notes.map((note) => (
             <Timeline.Item key={note.id} dot={<Icon icon='user' />}>
@@ -109,9 +109,6 @@ export default class AppDashboard extends Component<
             </Timeline.Item>
           ))}
         </Timeline>
-        {/* <IconButton icon={<Icon icon='camera' />} size={'lg'}>
-          Find Note
-        </IconButton> */}
         <div
           ref={(loadingRef) => (this.loadingRef = loadingRef)}
           style={{

@@ -13,7 +13,7 @@ export default class AppBody extends Component<AppBodyProps> {
   render() {
     const { user, signInWithGoogle } = this.props;
     return (
-      <Content className='App-content'>
+      <Content className='App-content' style={{ overflow: 'auto' }}>
         {(user && <PageHome {...{ signInWithGoogle }} />) || (
           <PageLogin {...this.props} />
         )}
