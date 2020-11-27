@@ -2,81 +2,127 @@ import React, { Component } from 'react';
 import { Icon, Panel, Timeline } from 'rsuite';
 import firebase from 'firebase';
 
-// interface AppDashboardState {
-//   notes: [];
-// }
+interface Annotation {
+  body: string;
+  book: string;
+  owner: string;
+  page: number;
+  target: string;
+  id: string;
+  date: { seconds: number; nanoseconds: number };
+}
 
-export default class AppDashboard extends Component<{
-  app: firebase.app.App;
-}> {
+interface AppDashboardProps {}
+interface AppDashboardState {
+  notes: Annotation[];
+  loading: boolean;
+  page: number;
+  prevY: number;
+}
+
+export default class AppDashboard extends Component<
+  AppDashboardProps,
+  AppDashboardState
+> {
+  loadingRef: HTMLDivElement | null;
+  observer: IntersectionObserver | null;
+
+  constructor(props: AppDashboardProps) {
+    super(props);
+
+    this.loadingRef = null;
+    this.observer = null;
+    this.state = {
+      notes: [],
+      loading: false,
+      page: 0,
+      prevY: 0,
+    };
+
+    this.handleObserver = this.handleObserver.bind(this);
+  }
+
   componentDidMount() {
-    if (!this.props.app.database) {
-      return;
-    }
-    this.props.app
-      .database()
-      .ref('annotations')
-      .once('value')
-      .then((snapshot) => {
-        console.log(snapshot.val());
+    this.getNotes(this.state.page);
+    this.observer = new IntersectionObserver(this.handleObserver, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1.0,
+    });
+    this.observer.observe(this.loadingRef as Element);
+  }
+
+  getNotes(page = 0) {
+    this.setState({ loading: true });
+    firebase
+      .firestore()
+      .collection('annotations')
+      .orderBy('date', 'desc')
+      .limit(100)
+      .get()
+      .then((querySnapshot) => {
+        const notes: Annotation[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const note = doc.data() as Annotation;
+          note.id = doc.id;
+          notes.push(note);
+        });
+
+        this.setState({ loading: false, notes });
+      })
+      .catch(() => {
+        console.error('Error adding document');
       });
+  }
+
+  handleObserver(entries: IntersectionObserverEntry[]) {
+    const y = entries[0].boundingClientRect.y;
+
+    if (this.state.prevY > y) {
+      const currentPage = this.state.page;
+      this.getNotes(currentPage);
+      this.setState({ page: currentPage + 1 });
+    }
+
+    this.setState({ prevY: y });
+  }
+
+  toDate(seconds: number) {
+    const d = new Date(1970, 0, 1);
+    d.setSeconds(seconds);
+    return d.toLocaleString();
   }
 
   render() {
     return (
-      <Panel>
+      <Panel style={{ overflow: 'auto' }}>
         <Timeline className='custom-timeline'>
-          <Timeline.Item dot={<Icon icon='credit-card' size='2x' />}>
-            <p>March 1, 10:20</p>
-            <p>Your order starts processing</p>
-          </Timeline.Item>
-          <Timeline.Item>
-            <p>March 1, 11:34</p>
-            <p>The package really waits for the company to pick up the goods</p>
-          </Timeline.Item>
-          <Timeline.Item>
-            <p>March 1, 16:20</p>
-            <p>[Packed]</p>
-            <p>Beijing company has received the shipment</p>
-          </Timeline.Item>
-          <Timeline.Item dot={<Icon icon='plane' size='2x' />}>
-            <p>March 2, 06:12</p>
-            <p>[In transit]</p>
-            <p>Order has been shipped from Beijing to Shanghai</p>
-          </Timeline.Item>
-          <Timeline.Item dot={<Icon icon='truck' size='2x' />}>
-            <p>March 2, 09:20</p>
-            <p>[In transit]</p>
-            <p>
-              Sended from the Shanghai Container Center to the distribution
-              center
-            </p>
-          </Timeline.Item>
-          <Timeline.Item dot={<Icon icon='user' size='2x' />}>
-            <p>March 3, 14:20</p>
-            <p>[Delivery]</p>
-            <p>
-              Shanghai Hongkou District Company Deliverer: Mr. Li, currently
-              sending you a shipment
-            </p>
-          </Timeline.Item>
-          <Timeline.Item
-            dot={
-              <Icon
-                icon='check'
-                size='2x'
-                style={{ background: '#15b215', color: '#fff' }}
-              />
-            }
-          >
-            <p>March 3, 17:50</p>
-            <p>[Received]]</p>
-            <p>Your courier has arrived and the signer is the front desk</p>
-          </Timeline.Item>
+          {this.state.notes.map((note) => (
+            <Timeline.Item key={note.id} dot={<Icon icon='user' />}>
+              <p>
+                {this.toDate(note.date.seconds)} | {note.owner}
+              </p>
+              <p>
+                [{note.page}, {note.book}] {note.body}
+              </p>
+            </Timeline.Item>
+          ))}
         </Timeline>
         {/* <IconButton icon={<Icon icon='camera' />} size={'lg'}>
           Find Note
         </IconButton> */}
+        <div
+          ref={(loadingRef) => (this.loadingRef = loadingRef)}
+          style={{
+            height: '100px',
+            margin: '30px',
+          }}
+        >
+          <span style={{ display: this.state.loading ? 'block' : 'none' }}>
+            Loading...
+          </span>
+        </div>
       </Panel>
     );
   }
