@@ -4,10 +4,89 @@ Virtual annotation app for the classroom.
 
 ## Setup Develop Environment
 
-1) [Install and update Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
-2) Clone this repo ([in Xcode](xcode://clone?repo=https%3A%2F%2Fgithub.com%2Ftylerfranklin%2Fannotate-ar), [in GitHub Desktop](x-github-client://openRepo/https://github.com/tylerfranklin/annotate-ar))
-3) Open a terminal client (e.g. [iterm2](https://iterm2.com/downloads/stable/latest)) 
-4) Ensure CocoaPods is installed (e.g. `pods --version`, [installation instructions](https://guides.cocoapods.org/using/getting-started.html#installation))
-5) Navigate to repo root (e.g. `cd ~/projects/annotate-ar`)
-6) Install/verify pod deps (e.g. `pods install`)
-7) Open the xcworkspace (e.g. `open ./AnnotateAR.xcworkspace`)
+ `yarn install`
+
+## Test on Android
+
+You can use [Chrome's DevTools](https://developers.google.com/web/tools/chrome-devtools/remote-debugging) with the device plugged in by USB.
+
+## Test on iOS
+
+Right now only works for Safari's due to an outstanding iOS WebKit bug. You can use [Safari's DevTools](https://www.browserstack.com/guide/how-to-debug-on-iphone) with the device plugged in.
+
+## Available Scripts
+
+In the project directory, you can run:
+
+### `yarn start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+### `yarn test`
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `yarn build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `yarn deploy`
+
+Builds and deploys to staging server (currently [ar-notes.web.app](https://ar-notes.web.app)).
+
+### `firebase serve`
+
+You'll need the Firebase CLI package: `yarn install --global firebase` .
+
+This command runs whatever's currently in the `build/` directory along with local Firebase service emualators, which is handy for testing the Firebase functions like our fuzzy search. 
+
+### `yarn eject`
+
+**Note: this is a one-way operation. Once you `eject` , you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject` . The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `yarn build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
